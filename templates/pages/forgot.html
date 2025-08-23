@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Olvidé mi contraseña - El Rincón del Soldado{% endblock %}
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="auth-form">
+          <h2 class="text-gold mb-3">¿Has olvidado tu contraseña?</h2>
+          <p class="text-light">Introduce tu correo y te enviaremos un enlace para restablecerla.</p>
+          <form method="POST" class="vstack gap-3">
+            <input type="email" name="email" class="form-control input-field" placeholder="tu@correo.com" required>
+            <button class="btn btn-military py-2">Enviar enlace</button>
+          </form>
+          <div class="text-center mt-3">
+            <a href="{{ url_for('login') }}" class="text-gold">Volver a iniciar sesión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

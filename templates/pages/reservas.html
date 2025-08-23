@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}Reservas{% endblock %}
+
+{% block content %}
+
+<style>
+  /* Panel contenedor */
+  .panel-gold{
+    background: rgba(26,26,26,.85);
+    border:1px solid rgba(212,175,55,.35);
+    border-radius:18px;
+    box-shadow:0 0 38px rgba(240,194,75,.16);
+    padding:1.4rem;
+  }
+  /* Formulario dorado */
+  .form-gold .form-label{ color:#d4af37; font-weight:600; }
+  .form-gold .form-control,
+  .form-gold .form-select,
+  .form-gold textarea{
+    background: rgba(0,0,0,.35);
+    border:1px solid rgba(212,175,55,.25);
+    color:#f5f5f5;
+    border-radius:12px;
+  }
+  .form-gold .form-control:focus,
+  .form-gold .form-select:focus,
+  .form-gold textarea:focus{
+    border-color:#d4af37;
+    box-shadow:0 0 0 .2rem rgba(212,175,55,.2);
+    background: rgba(0,0,0,.45);
+    color:#fff;
+  }
+  /* Cabecera igual a Diseña tu menú */
+  .menu-hero{
+    border-radius:18px; border:1px solid #d4af37;
+    padding:2rem 1.6rem;
+    background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.55));
+    box-shadow:0 0 38px rgba(240,194,75,.16);
+    text-align:center; margin-bottom:1.8rem;
+  }
+  .menu-title{
+    font-weight:800; line-height:1.2;
+    font-size:clamp(2rem,3vw+1rem,3rem);
+    background: linear-gradient(90deg,#8c6a00,#f0c24b,#ffe08e,#f0c24b,#8c6a00);
+    background-size:220% 100%; -webkit-background-clip:text;
+    color:transparent; animation: shine 5.5s linear infinite;
+  }
+  .menu-underline{ width:140px;height:3px;margin:.9rem auto 0;
+    background:linear-gradient(90deg,#8c6a00,#f0c24b,#8c6a00); border-radius:2px; }
+  @keyframes shine{ to{background-position:-220% 0;} }
+
+  /* Visibilidad de iconos fecha/hora */
+  input[type="date"], input[type="time"] { color-scheme: dark !important; }
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator{
+    filter: invert(1) brightness(1.4);
+    opacity: .9;
+  }
+
+  
+  
+</style>
+
+<section class="hero">
+  <h1 class="hero-title">Reservas</h1>
+  <span class="gold-divider"></span>
+  <p class="hero-subtitle">Reserva tu mesa en segundos</p>
+</section>
+
+<div class="panel-gold">
+  <form action="{{ url_for('pagina_reservas') }}" method="post" id="form-reserva" class="row g-3 form-gold">
+
+    <div class="col-md-6">
+      <label class="form-label">Nombre</label>
+      <input type="text" class="form-control" name="nombre" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Teléfono</label>
+      <input type="tel" class="form-control" name="telefono" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Email (opcional)</label>
+      <input type="email" class="form-control" name="email" placeholder="tucorreo@ejemplo.com">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Fecha</label>
+      <input type="date" class="form-control" name="fecha" id="fecha" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Hora</label>
+      <input type="time" class="form-control" name="hora" id="hora" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Nº de personas</label>
+      <input type="number" class="form-control" name="personas" id="personas" min="1" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Tipo de mesa</label>
+      <select class="form-select" name="tipo">
+        <option value="">—</option>
+        <option>Normal</option><option>VIP</option><option>Grupo</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Mesa</label>
+      <select class="form-select" name="mesa_id" id="mesa_id" required disabled>
+        <option value="">— selecciona mesa disponible —</option>
+      </select>
+      <div class="text-light small">Elige una mesa disponible para esa fecha y hora.</div>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Comentarios</label>
+      <textarea class="form-control" rows="3" name="comentarios"></textarea>
+    </div>
+    <div class="col-12">
+      <div id="disp-mesas" class="small text-light">Selecciona fecha, hora y nº de personas…</div>
+    </div>
+    <div class="col-12">
+      <div class="d-grid">
+        <button id="btn-reservar" type="submit" class="btn btn-military">Reservar</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+async function cargarMesas() {
+  const fecha = document.getElementById('fecha').value;
+  const hora = document.getElementById('hora').value;
+  const personas = document.getElementById('personas').value;
+  if (!fecha || !hora || !personas) return;
+
+  const res = await fetch(`/api/mesas/disponibilidad?fecha=${fecha}&hora=${hora}&personas=${personas}`);
+  if (!res.ok) return;
+
+  const data = await res.json();
+  const select = document.getElementById('mesa_id');
+  const disp = document.getElementById('disp-mesas');
+
+  select.innerHTML = '<option value="">— selecciona mesa disponible —</option>';
+  disp.innerHTML = '';
+
+  if (data.available && data.available.length > 0) {
+    select.disabled = false;
+    data.available.forEach(m => {
+      select.innerHTML += `<option value="${m.id}">${m.nombre} (capacidad ${m.capacidad})</option>`;
+      disp.innerHTML += `<span style="background:green;color:white;padding:4px 8px;margin:3px;border-radius:6px;display:inline-block;">
+        ${m.nombre} (${m.capacidad})
+      </span>`;
+    });
+  } else {
+    select.disabled = true;
+    disp.innerHTML = '<span style="color:red;">No hay mesas disponibles para esos datos.</span>';
+  }
+}
+
+['fecha','hora','personas'].forEach(id => {
+  document.getElementById(id).addEventListener('change', cargarMesas);
+});
+</script>
+
+{% endblock %}

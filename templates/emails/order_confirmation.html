@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es"><meta charset="utf-8">
+<body style="font-family:Poppins,Arial; background:#111; color:#eee; padding:24px">
+  <div style="max-width:560px; margin:auto; background:#1c1c1c; border:1px solid #d4af37; border-radius:12px; padding:22px">
+    <h2 style="margin:0 0 8px; color:#d4af37;">Pedido #{{ order.id }} confirmado</h2>
+    <p>¡Gracias por tu pedido! Estos son los detalles:</p>
+    <table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:14px">
+      <thead>
+        <tr><th align="left">Producto</th><th align="right">Precio</th></tr>
+      </thead>
+      <tbody>
+        {% for it in order.items %}
+        <tr>
+          <td style="padding:6px 0; border-bottom:1px solid #333">{{ it.nombre }} × {{ it.cantidad }}</td>
+          <td style="padding:6px 0; border-bottom:1px solid #333" align="right">{{ '%.2f'|format(it.subtotal) }} €</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td style="padding-top:10px; font-weight:700">Total</td>
+          <td style="padding-top:10px; font-weight:700" align="right">{{ '%.2f'|format(order.total) }} €</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

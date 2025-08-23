@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Política de Privacidad{% endblock %}
+
+{% block content %}
+<div class="section-card">
+  <h1>Política de Privacidad</h1>
+
+  <p><strong>Responsable:</strong> El Rincón del Soldado</p>
+  <p><strong>Finalidad:</strong> Gestionar las consultas, reservas y pedidos de la web, así como mejorar la experiencia de usuario.</p>
+  <p><strong>Legitimación:</strong> Consentimiento del interesado y ejecución de la relación precontractual/contractual.</p>
+  <p><strong>Destinatarios:</strong> No se ceden datos a terceros salvo obligación legal o servicios necesarios para la prestación (p. ej., alojamiento o pasarela de pago en modo prueba).</p>
+  <p><strong>Conservación:</strong> Durante el tiempo imprescindible para la finalidad y los plazos exigidos por ley.</p>
+  <p><strong>Derechos:</strong> Acceso, rectificación, supresión, limitación, oposición y portabilidad. Puedes ejercerlos escribiendo a <em>correo@tudominio.com</em>.</p>
+  <p><strong>Procedencia:</strong> Los datos los aporta el propio usuario a través de formularios de la web.</p>
+
+  <h2>Medidas de seguridad</h2>
+  <p>
+    Aplicamos medidas técnicas y organizativas adecuadas para proteger la información
+    personal contra accesos no autorizados, pérdida o alteración.
+  </p>
+
+  <h2>Cookies</h2>
+  <p>
+    Usamos cookies técnicas y, en su caso, analíticas/funcionales para mejorar el
+    servicio. Más información en la <a href="{{ url_for('politica_cookies') }}">Política de Cookies</a>.
+  </p>
+</div>
+{% endblock %}

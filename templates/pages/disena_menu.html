@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% block title %}Diseña tu Menú{% endblock %}
+
+{% block content %}
+
+<style>
+  /* --- Título estilo "Menú Militar" --- */
+  .menu-hero h1 {
+    font-size: 2.8rem;
+    text-align: center;
+    font-weight: 700;
+    color: #d4af37;
+    margin-bottom: 0.4rem;
+  }
+  .menu-hero .menu-underline {
+    width: 120px;
+    height: 4px;
+    margin: 0 auto 2rem;
+    background: linear-gradient(to right, transparent, #d4af37, transparent);
+    border-radius: 4px;
+  }
+
+  /* --- Panel general (igual que contacto/reservas) --- */
+  .panel-gold{
+    background: rgba(26,26,26,.85);
+    border:1px solid rgba(212,175,55,.35);
+    border-radius:18px;
+    box-shadow:0 0 38px rgba(240,194,75,.16);
+    padding:1.5rem;
+    margin-bottom:1.5rem;
+  }
+
+  /* --- Formato especial centrado --- */
+  .panel-formato {
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  .panel-formato select {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  /* --- Inputs y selects dorados --- */
+  .form-gold .form-label{ color:#d4af37; font-weight:600; }
+  .form-gold .form-control,
+  .form-gold .form-select,
+  .form-gold textarea{
+    background: rgba(0,0,0,.35);
+    border:1px solid rgba(212,175,55,.25);
+    color:#f5f5f5;
+    border-radius:12px;
+  }
+  .form-gold .form-control:focus,
+  .form-gold .form-select:focus{
+    border-color:#d4af37;
+    box-shadow:0 0 0 .2rem rgba(212,175,55,.2);
+    background: rgba(0,0,0,.45);
+    color:#fff;
+  }
+/* --- Estilo uniforme para todos los selects --- */
+.form-select {
+  background: linear-gradient(to bottom, #1e1e1e, #111);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 12px;
+  color: #f5f5f5;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;      /* Texto centrado */
+  appearance: none;        /* Oculta la flecha por defecto */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-position: right 1rem center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-select:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 0.2rem rgba(212,175,55,0.25);
+  outline: none;
+}
+
+/* --- Opciones internas del desplegable --- */
+.form-select option {
+  background: #1a1a1a;
+  color: #f5f5f5;
+  padding: 0.6rem;
+  border-radius: 8px;
+}
+
+{% block extra_head %}
+<style>
+/* Estilo hero como en Menú Militar */
+.menu-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid #f0c24b;
+  padding: 2.4rem 1.8rem;
+  background:
+    radial-gradient(1200px 220px at 50% 0, rgba(240,194,75,.12), rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.55));
+  box-shadow: 0 0 38px rgba(240,194,75,.16);
+}
+
+.menu-hero::before {
+  content: "";
+  position: absolute; inset: -2px;
+  background: conic-gradient(from var(--ang,0deg),
+    rgba(140,106,0,.35), rgba(240,194,75,.35), rgba(255,224,142,.35), rgba(140,106,0,.35));
+  filter: blur(18px);
+  opacity: .20;
+  animation: spin 18s linear infinite;
+}
+@keyframes spin { to { --ang:360deg; } }
+
+.menu-hero-inner { position: relative; z-index: 1; }
+
+.menu-title {
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.2;
+  font-size: clamp(2rem, 3.6vw + .6rem, 3.2rem);
+  background: linear-gradient(90deg,
+    #8c6a00 0%, #f0c24b 35%, #ffe08e 55%, #f0c24b 75%, #8c6a00 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 1px 0 rgba(0,0,0,.45);
+  animation: shine 5.5s linear infinite;
+}
+@keyframes shine { to { background-position: -220% 0; } }
+
+.menu-underline {
+  width: 140px; height: 3px; margin: .9rem auto 1.1rem;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #8c6a00, #f0c24b, #8c6a00);
+  box-shadow: 0 0 14px rgba(240,194,75,.45);
+}
+</style>
+{% endblock %}
+
+
+</style>
+
+<!-- Cabecera con estilo "Menú Militar" -->
+<section class="hero">
+  <h1 class="hero-title">Diseña tu Menú</h1>
+  <span class="gold-divider"></span>
+  <p class="hero-subtitle">Crea tu combinación perfecta</p>
+</section>
+
+
+<!-- Select de formato centrado -->
+<div class="panel-gold panel-formato">
+  <form method="get" class="form-gold">
+    <label class="form-label">MENÚ</label>
+    <select name="formato" class="form-select" onchange="this.form.submit()" required>
+      {% for m in menus %}
+        <option value="{{ m.id }}" {{ 'selected' if m.id==menu_id }}>
+          {{ m.nombre }} — {{ '%.2f'|format(m.precio|float) }} €
+        </option>
+      {% endfor %}
+    </select>
+  </form>
+</div>
+
+<!-- Formulario principal -->
+<div class="panel-gold">
+  <form method="post" action="{{ url_for('disena_menu') }}" class="form-gold">
+    <input type="hidden" name="formato" value="{{ menu_id }}">
+
+    <div class="mb-3">
+      <label class="form-label">Entrante</label>
+      <select name="entrante" class="form-select" required>
+        <option value="">Selecciona...</option>
+        {% for e in entrantes %}<option value="{{ e.id }}">{{ e.nombre }}</option>{% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Principal</label>
+      <select name="principal" class="form-select" required>
+        <option value="">Selecciona...</option>
+        {% for p in principales %}<option value="{{ p.id }}">{{ p.nombre }}</option>{% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Bebida</label>
+      <select name="bebida" class="form-select" required>
+        <option value="">Selecciona...</option>
+        {% for b in bebidas %}<option value="{{ b.id }}">{{ b.nombre }}</option>{% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Postre</label>
+      <select name="postre" class="form-select" required>
+        <option value="">Selecciona...</option>
+        {% for p in postres %}<option value="{{ p.id }}">{{ p.nombre }}</option>{% endfor %}
+      </select>
+    </div>
+
+    <fieldset class="mb-3">
+      <legend class="form-label">Extras opcionales</legend>
+      <div class="row">
+        {% for ex in extras %}
+          <div class="col-6 col-md-4 col-lg-3 mb-2">
+            <input type="checkbox"
+                   class="form-check-input extra-check"
+                   id="extra_{{ ex.id }}"
+                   name="extras"
+                   value="{{ ex.id }}"
+                   data-precio="{{ '%.2f'|format(ex.precio|float) }}">
+            <label class="form-check-label" for="extra_{{ ex.id }}">
+              {{ ex.nombre }} (+{{ '%.2f'|format(ex.precio|float) }} €)
+            </label>
+          </div>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <div class="mb-4 text-end" style="font-size:1.15rem;">
+      <span id="total-importe"><b>Total: {{ '%.2f'|format(menu_precio|float) }} €</b></span>
+    </div>
+
+    <button type="submit" class="btn btn-military w-100" style="font-size:1.05rem">
+      Añadir al carrito
+    </button>
+  </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  function calcTotal() {
+    const base = {{ menu_precio|float }};
+    let extrasTotal = 0;
+    document.querySelectorAll('.extra-check:checked').forEach(ex => {
+      extrasTotal += parseFloat(ex.dataset.precio) || 0;
+    });
+    const total = (base + extrasTotal).toFixed(2);
+    document.getElementById('total-importe').innerHTML =
+      "<b>Total: " + total + " €</b>";
+  }
+  document.querySelectorAll(".extra-check").forEach(el => {
+    el.addEventListener('change', calcTotal);
+  });
+  calcTotal();
+});
+</script>
+
+{% endblock %}

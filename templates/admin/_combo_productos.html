@@ -1,0 +1,75 @@
+<div class="mb-3">
+  <form class="row g-2" onsubmit="return adminDM.reload(event)">
+    <input type="hidden" name="cid" value="{{ combo.id }}">
+    <div class="col-md-4">
+      <input class="form-control" name="q" value="{{ d_q or '' }}" placeholder="Buscar…">
+    </div>
+    <div class="col-md-4">
+      <select name="cat" class="form-select">
+        <option value="Todas" {{ 'selected' if (d_cat or 'Todas')=='Todas' else '' }}>Todas</option>
+        {% for c in d_categorias %}
+          <option value="{{ c }}" {{ 'selected' if c==d_cat else '' }}>{{ c }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2 form-check d-flex align-items-center">
+      <input class="form-check-input me-2" type="checkbox" id="solo" name="solo" value="1" {{ 'checked' if solo=='1' else '' }}>
+      <label class="form-check-label" for="solo">Solo asignados</label>
+    </div>
+    <div class="col-md-2 d-grid">
+      <button class="btn btn-primary">Filtrar</button>
+    </div>
+  </form>
+</div>
+
+<div class="table-responsive" style="max-height:60vh;overflow:auto;">
+  <table class="table table-dark table-hover align-middle rtable">
+    <thead class="thead-gold">
+      <tr>
+        <th>#</th><th>Categoría</th><th>Nombre</th>
+        <th class="d-none d-lg-table-cell">Descripción</th>
+        <th class="text-end">Precio (€)</th>
+        <th>Slot</th>
+        <th class="text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in items %}
+      {% set pid = p.id if p.id is defined else p[0] %}
+      {% set slot_actual = asignados.get(pid) %}
+      <tr>
+        <td data-label="#">{{ p.id }}</td>
+        <td data-label="Categoría">{{ p.categoria }}</td>
+        <td data-label="Nombre" class="fw-semibold">{{ p.nombre }}</td>
+        <td class="d-none d-lg-table-cell">{{ p.descripcion }}</td>
+        <td data-label="Precio" class="text-end">{{ '%.2f'|format(p.precio|float) }}</td>
+
+        <td data-label="Slot" style="min-width:130px;">
+          <select class="form-select form-select-sm" data-pid="{{ p.id }}" onchange="adminDM.setSlot({{ combo.id }}, {{ p.id }}, this.value)">
+            <option value="" {{ 'selected' if not slot_actual else '' }} disabled>Elegir…</option>
+            <option value="entrante"  {{ 'selected' if slot_actual=='entrante'  else '' }}>Entrante</option>
+            <option value="principal" {{ 'selected' if slot_actual=='principal' else '' }}>Principal</option>
+            <option value="bebida"    {{ 'selected' if slot_actual=='bebida'    else '' }}>Bebida</option>
+            <option value="postre"    {{ 'selected' if slot_actual=='postre'    else '' }}>Postre</option>
+          </select>
+        </td>
+
+        <td data-label="Acciones" class="text-center">
+          <button class="btn btn-sm {{ 'btn-success' if slot_actual else 'btn-outline-secondary' }}"
+                  onclick="adminDM.setCurrent({{ combo.id }}, {{ p.id }})">
+            {{ 'Actualizar' if slot_actual else 'Añadir' }}
+          </button>
+          {% if slot_actual %}
+          <button class="btn btn-sm btn-outline-danger"
+                  onclick="adminDM.remove({{ combo.id }}, {{ p.id }})">
+            Quitar
+          </button>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+        <tr><td colspan="7" class="text-center text-secondary">Sin resultados.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,375 @@
+{% extends "base.html" %}
+{% block title %}Nuestra Carta{% endblock %}
+
+{% block extra_head %}
+<style>
+  .menu-hero{
+    background: rgba(0,0,0,.55);
+    border:1px solid #d4af37;
+    border-radius: 18px;
+    box-shadow: 0 0 40px rgba(212,175,55,.15);
+    padding: 2.25rem 1.75rem;
+  }
+  .section-title{
+    color:#d4af37;
+    margin:2rem 0 1rem;
+    font-weight:700;
+    letter-spacing:.5px;
+    border-bottom:1px solid rgba(212,175,55,.35);
+    padding-bottom:.35rem;
+  }
+
+  /* Tarjeta compacta */
+ 
+  .menu-card{
+    background: #111; /* negro sólido */
+    border:1px solid rgba(212,175,55,.30);
+    border-radius:12px;
+    overflow:hidden;
+    height:100%;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+  .menu-card:hover{ transform: translateY(-4px); border-color:#d4af37; box-shadow:0 10px 26px rgba(212,175,55,.18); }
+  .menu-card img{ width:100%; height:150px; object-fit:cover; border-bottom:1px solid rgba(212,175,55,.25); }
+  /* Imágenes de la carta: que se vea el producto completo */
+
+
+ .menu-card img {
+  width: 100%;
+  height: 180px;               /* Mismo alto para todas */
+  object-fit: contain;         /* Muestra la imagen completa */
+  object-position: center;     /* Centrada vertical y horizontal */
+  display: block;
+  padding: 8px;
+  background: #111;            /* Mismo fondo que la tarjeta */
+  border-radius: 0;            /* Sin bordes extra en la imagen */
+  border-bottom: 1px solid rgba(212,175,55,0.25);
+}
+
+
+
+  .menu-card .body{ padding:.75rem .9rem; }
+  .menu-card h5{ font-size:1rem; margin:0; line-height:1.25; }
+  .menu-card .desc{
+    font-size:.9rem; color:#cfcfcf; margin:.35rem 0 .55rem;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.6em;
+  }
+
+
+  .menu-price{ color:#d4af37; font-weight:600; font-size:1rem; margin-left:.5rem; }
+  .muted{ color:#9aa0a6; }
+
+  /* Grid compacta */
+  .row.g-compact{ --bs-gutter-x: 1rem; --bs-gutter-y: 1rem; }
+
+  /* Badges de alérgenos en tarjeta */
+  .allergen-list{ display:flex; flex-wrap:wrap; gap:.25rem .35rem; margin-bottom:.55rem; }
+  .allergen-badge{ display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:999px; border:1px solid var(--primary, #d4af37); background: rgba(212,175,55,.10); color:#f5f5f5; font-size:.9rem; line-height:1; user-select:none; cursor:default; }
+
+  /* Selector de alérgenos (píldoras) */
+  .pill-check { display:none; }
+  .pill-label{
+    display:inline-flex; align-items:center; gap:.4rem;
+    border:1px solid rgba(212,175,55,.35);
+    background: rgba(212,175,55,.08);
+    color:#f5f5f5; border-radius:999px; padding:.35rem .65rem; font-size:.9rem; cursor:pointer;
+  }
+  .pill-check:checked + .pill-label{
+    background: linear-gradient(to right, #7a6600, #d4af37);
+    color:#121212; border-color:#d4af37;
+  }
+  .filter-hint{ font-size:.85rem; color:#c9c9c9; }
+ .titulo-menu {
+    color: #e0c572; /* Oro más claro */
+    font-family: 'Times New Roman', serif;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    position: relative;
+    display: inline-block;
+  }
+  
+  .titulo-menu:after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #d4af37, transparent);
+  }
+
+  /* Ajuste para el hero del menú */
+  .menu-hero {
+    background: rgba(26, 26, 26, 0.85); /* Fondo más oscuro */
+    border: 1px solid rgba(212, 174, 60, 1)ff; /* Borde dorado claro */
+    box-shadow: 0 0 20px rgba(224, 197, 114, 0.15);
+  }
+
+  /* === ORO INTENSO – variables (coinciden con tu paleta) === */
+  :root{
+    --gold: #f0c24b;         /* dorado intenso */
+    --gold-deep: #8c6a00;    /* sombra dorada */
+    --gold-soft: #ffe08e;    /* brillo */
+  }
+
+  /* === Contenedor del hero con fondo dinámico === */
+  .menu-hero{
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid var(--gold);
+    padding: 2.4rem 1.8rem;
+    background:
+      radial-gradient(1200px 220px at 50% 0, rgba(240,194,75,.12), rgba(0,0,0,0) 60%),
+      linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.55));
+    box-shadow: 0 0 38px rgba(240,194,75,.16);
+  }
+
+  /* Halo dorado girando muy sutil */
+  .menu-hero::before{
+    content:"";
+    position:absolute; inset:-2px;
+    background: conic-gradient(from var(--ang,0deg),
+      rgba(140,106,0,.35), rgba(240,194,75,.35), rgba(255,224,142,.35), rgba(140,106,0,.35));
+    filter: blur(18px);
+    opacity:.20;
+    animation: spin 18s linear infinite;
+  }
+  @keyframes spin { to { --ang:360deg; } }
+
+  .menu-hero-inner{ position:relative; z-index:1; }
+
+  /* === Título con degradado animado (oro “vivo”) === */
+  .menu-title{
+    margin: 0;
+    font-weight: 800;
+    line-height: 1.2;
+    font-size: clamp(2rem, 3.6vw + .6rem, 3.2rem);
+    background: linear-gradient(90deg,
+      var(--gold-deep) 0%,
+      var(--gold) 35%,
+      var(--gold-soft) 55%,
+      var(--gold) 75%,
+      var(--gold-deep) 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;                 /* fallback si no soporta background-clip: text */
+    text-shadow: 0 1px 0 rgba(0,0,0,.45);
+    animation: shine 5.5s linear infinite;
+  }
+  @keyframes shine { to { background-position: -220% 0; } }
+
+  /* Línea dorada decorativa bajo el título */
+  .menu-underline{
+    width: 140px; height: 3px; margin: .6rem auto 0;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-deep));
+    box-shadow: 0 0 14px rgba(240,194,75,.45);
+  }
+
+  /* Ajuste en móviles */
+  @media (max-width: 576px){
+    .menu-hero{ padding: 1.6rem 1.1rem; }
+    .menu-underline{ width: 110px; }
+  } 
+
+   /* Más separación bajo el título */
+  .menu-underline{
+    /* top | left/right | bottom */
+    margin: .9rem auto 1.1rem;  /* antes: .6rem auto 0 */
+  }
+
+
+  .favorito-btn {
+  transition: all .2s ease-in-out;
+}
+
+.favorito-btn.favorito-activo {
+  background-color: #d4af37 !important;   /* Dorado sólido */
+  color: #121212 !important;              /* Texto oscuro para contraste */
+  border: 1px solid #d4af37 !important;
+  font-weight: 600;
+}
+
+/* ——— Botones de cada tarjeta pegados abajo (sin tocar HTML) ——— */
+.menu-card{ 
+  position: relative;                /* referencia para el absoluto */
+}
+
+/* Reservamos hueco dentro del cuerpo para que el texto no quede tapado */
+.menu-card .body{
+  padding-bottom: 72px;              /* alto aprox. de la fila de botones */
+}
+
+/* La fila de botones que ya tienes (d-flex gap-2 mt-2) la fijamos abajo */
+.menu-card .body > .d-flex.gap-2.mt-2{
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  margin-top: 0 !important;          /* evita espacio fantasma por la mt-2 */
+}
+
+/* Que ambos botones ocupen lo mismo y tengan altura uniforme */
+.menu-card .body > .d-flex.gap-2.mt-2 .btn{
+  width: 100%;
+  min-height: 38px;                  /* o 40px si lo prefieres */
+}
+
+
+  
+</style>
+{% endblock %}
+
+{% block content %}
+
+{# ---------- Macro para pintar badges de alérgenos ---------- #}
+{% macro alergeno_badge(a) -%}
+  {% set a_low = (a or '')|lower %}
+  {% if   a_low == 'gluten' %}{% set ic='🌾' %}{% set tt='Gluten' %}
+  {% elif a_low == 'lactosa' %}{% set ic='🥛' %}{% set tt='Lactosa' %}
+  {% elif a_low == 'huevo' %}{% set ic='🥚' %}{% set tt='Huevo' %}
+  {% elif a_low == 'frutos secos' %}{% set ic='🥜' %}{% set tt='Frutos secos' %}
+  {% elif a_low == 'marisco' %}{% set ic='🦐' %}{% set tt='Marisco' %}
+  {% elif a_low == 'pescado' %}{% set ic='🐟' %}{% set tt='Pescado' %}
+  {% elif a_low == 'soja' %}{% set ic='🫘' %}{% set tt='Soja' %}
+  {% elif a_low == 'sesamo' %}{% set ic='SE' %}{% set tt='Sésamo' %}
+  {% elif a_low == 'apio' %}{% set ic='🥬' %}{% set tt='Apio' %}
+  {% elif a_low == 'mostaza' %}{% set ic='MO' %}{% set tt='Mostaza' %}
+  {% else %}{% set ic='❗' %}{% set tt=a %}
+  {% endif %}
+  <span class="allergen-badge" title="{{ tt }}">{{ ic }}</span>
+{%- endmacro %}
+
+<!-- Cabecera -->
+
+<section class="hero">
+  <h1 class="hero-title">Menú Militar</h1>
+  <span class="gold-divider"></span>
+  <p class="hero-subtitle">Platos diseñados para satisfacer el apetito de los más valientes</p>
+</section>
+
+
+<!-- Filtros -->
+<form class="row g-3 align-items-end mb-3" method="get" action="{{ url_for('menu') }}">
+  <div class="col-md-6">
+    <label class="form-label text-gold">Buscar</label>
+    <input name="q" value="{{ q }}" type="text" class="form-control" placeholder="Ej.: tortilla, café, croquetas…">
+  </div>
+  <div class="col-md-3">
+    <label class="form-label text-gold">Categoría</label>
+    <select name="cat" class="form-select">
+      <option value="Todas" {{ 'selected' if cat == 'Todas' else '' }}>Todas</option>
+     {% for c in categorias if c.lower() != 'sin gluten' %}
+  <option value="{{ c }}" {{ 'selected' if c == cat else '' }}>{{ c }}</option>
+{% endfor %}
+
+    </select>
+  </div>
+  <div class="col-md-3 d-grid">
+    <label class="form-label text-gold invisible">Filtrar</label>
+    <button class="btn btn-military">Filtrar</button>
+  </div>
+
+  <!-- Evitar alérgenos -->
+  <div class="col-12">
+    <label class="form-label text-gold mb-1">Evitar alérgenos</label>
+    <div class="d-flex flex-wrap gap-2">
+      {% for a in alergenos %}
+        {% set checked = (sin_sel and a in sin_sel) %}
+        <input class="pill-check" type="checkbox" id="sin_{{ loop.index }}" name="sin" value="{{ a }}" {{ 'checked' if checked else '' }}>
+        <label class="pill-label" for="sin_{{ loop.index }}">
+          {{ alergeno_badge(a) }} <span>{{ a|title }}</span>
+        </label>
+      {% endfor %}
+    </div>
+    <div class="filter-hint mt-1">Mostramos solo productos que <strong>no contienen</strong> los alérgenos seleccionados.</div>
+  </div>
+</form>
+
+{% set cats_to_show = categorias if cat == 'Todas' else [cat] %}
+{% set total_visibles = 0 %}
+
+{% for c in cats_to_show if c.lower() != 'sin gluten' %}
+
+  {# productos por categoría (tolerante con mayús/minús) #}
+  {% set por_cat =
+      productos | selectattr('categoria','equalto',c) | list
+      or productos | selectattr('categoria','equalto',c|upper) | list
+      or productos | selectattr('categoria','equalto',c|lower) | list
+  %}
+
+  {% if por_cat|length %}
+    {% set total_visibles = total_visibles + por_cat|length %}
+    <h2 class="section-title">{{ c }}</h2>
+
+    <!-- cuadrícula compacta: 2/3/4/6 por fila -->
+    <div class="row g-compact">
+      {% for p in por_cat %}
+      <div class="col-6 col-md-4 col-lg-3 col-xxl-2">
+        <div class="menu-card">
+          {% if p.imagen %}
+            <img src="{{ url_for('static', filename='img/' ~ p.imagen) }}" alt="{{ p.nombre }}">
+          {% endif %}
+          <div class="body">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h5 class="mb-0">{{ p.nombre }}</h5>
+              <span class="menu-price">{{ '%.2f'|format(p.precio|float) }} €</span>
+            </div>
+
+            <p class="desc">{{ p.descripcion }}</p>
+
+            {% if p.alergenos and p.alergenos|length %}
+              <div class="allergen-list" aria-label="Alérgenos">
+                {% for a in p.alergenos %}
+                  {{ alergeno_badge(a) }}
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if p.agotado %}
+  <span class="badge bg-danger">Agotado</span>
+{% elif session.get('usuario_id') %}
+  <div class="d-flex justify-content-between gap-2 mt-2">
+    <!-- Botón Añadir -->
+    <form method="post" action="{{ url_for('agregar_al_carrito') }}" class="flex-fill">
+      <input type="hidden" name="nombre" value="{{ p.nombre }}">
+      <input type="hidden" name="precio" value="{{ p.precio }}">
+      <input type="hidden" name="imagen" value="{{ p.imagen or '' }}">
+      <button type="submit" class="btn btn-military btn-sm w-100">
+        <i class="bi bi-cart-plus"></i> Añadir
+      </button>
+    </form>
+
+    <!-- Botón Favorito -->
+    <form method="post" action="{{ url_for('favoritos_toggle', pid=p.id) }}" class="flex-fill">
+      {% set in_fav = (fav_ids and p.id in fav_ids) %}
+      <button type="submit" 
+              class="btn btn-sm w-100 favorito-btn {{ 'favorito-activo' if in_fav else 'btn-military' }}">
+        ★ 
+      </button>
+    </form>
+  </div>
+{% else %}
+  <div class="d-flex gap-2 mt-2">
+    <a href="{{ url_for('login') }}" class="btn btn-secondary btn-sm w-100">
+      Inicia sesión para añadir
+    </a>
+  </div>
+{% endif %}
+
+
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endfor %}
+
+{% if total_visibles == 0 %}
+  <p class="fst-italic muted mt-3">No hay productos que coincidan con los filtros actuales.</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+# Python / entorno
+venv/
+.env
+*.pyc
+__pycache__/
+*.log
+
+# Bases de datos locales (si existiera alguna)
+*.sqlite3
+*.db
+
+# Instancia Flask (si la usas)
+instance/
+
+# IDE / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Caches/tests
+.pytest_cache/
+.coverage
+
+# Subidas en tiempo de ejecución (ajusta si usas otras rutas)
+static/uploads/
+static/img/avatars/
+static/uploads/contacto/

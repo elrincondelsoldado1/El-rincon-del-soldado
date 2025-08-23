@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Iniciar Sesión - El Rincón del Soldado{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="auth-form">
+          <div class="text-center mb-5">
+            <img src="/static/img/serviam-logo.jpg" alt="Serviam" class="img-fluid mb-3" style="max-height: 100px;">
+            <h2 class="text-gold">Iniciar Sesión</h2>
+            <p class="text-light">Accede a tu cuenta para disfrutar de todas las funcionalidades</p>
+          </div>
+          
+          <form method="POST">
+            <div class="mb-4">
+              <label for="email" class="form-label input-label">Correo electrónico</label>
+              <input type="email" class="form-control input-field" id="email" name="email" required>
+            </div>
+            <div class="mb-4">
+              <label for="password" class="form-label input-label">Contraseña</label>
+              <input type="password" class="form-control input-field" id="password" name="password" required>
+            </div>
+            <div class="d-grid mb-3">
+              <button type="submit" class="btn btn-military py-2">
+                <i class="bi bi-box-arrow-in-right me-2"></i> Entrar
+              </button>
+            </div>
+            <div class="text-center mt-2">
+  <a href="{{ url_for('forgot_password') }}" class="text-gold text-decoration-none">
+    ¿Has olvidado tu contraseña?
+  </a>
+</div>
+
+
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            <div class="text-center mt-3">
+              <p class="text-light">¿No tienes cuenta? <a href="{{ url_for('registro') }}" class="text-gold">Regístrate aquí</a></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

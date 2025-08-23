@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block title %}Contacto{% endblock %}
+
+{% block content %}
+
+<style>
+  .panel-gold{ background:rgba(26,26,26,.85);border:1px solid rgba(212,175,55,.35);
+    border-radius:18px;box-shadow:0 0 38px rgba(240,194,75,.16);padding:1.4rem; }
+  
+    .form-gold .form-label{ color:#d4af37;font-weight:600; }
+  
+  .form-gold .form-control{ background:rgba(0,0,0,.35);border:1px solid rgba(212,175,55,.25);
+    color:#f5f5f5;border-radius:12px; }
+
+  .form-gold .form-control:focus{ border-color:#d4af37;box-shadow:0 0 0 .2rem rgba(212,175,55,.2); }
+  
+  .menu-hero{ border-radius:18px;border:1px solid #d4af37;padding:2rem 1.6rem;text-align:center;
+    background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,.55));
+    box-shadow:0 0 38px rgba(240,194,75,.16);margin-bottom:1.8rem; }
+  
+    .menu-title{ font-weight:800;line-height:1.2;font-size:clamp(2rem,3vw+1rem,3rem);
+    background:linear-gradient(90deg,#8c6a00,#f0c24b,#ffe08e,#f0c24b,#8c6a00);
+    background-size:220% 100%;-webkit-background-clip:text;color:transparent;
+    animation:shine 5.5s linear infinite; }
+  
+    .menu-underline{ width:140px;height:3px;margin:.9rem auto 0;background:linear-gradient(90deg,#8c6a00,#f0c24b,#8c6a00);border-radius:2px; }
+  
+    @keyframes shine{ to{background-position:-220% 0;} }
+
+
+.titulo-seccion {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.titulo-seccion h2 {
+  font-size: 2.5rem;
+  color: #d4af37; /* dorado principal */
+  font-weight: bold;
+  margin-bottom: 5px;
+  position: relative;
+}
+
+.titulo-seccion h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #d4af37, transparent);
+  margin: 8px auto;
+  border-radius: 2px;
+}
+
+.titulo-seccion .subtitulo {
+  font-size: 1.2rem;
+  color: #c9a64c; /* dorado suave */
+  margin-top: 12px;
+}
+  
+
+</style>
+
+<section class="hero">
+  <h1 class="hero-title">Contacto</h1>
+  <span class="gold-divider"></span>
+  <p class="hero-subtitle">Estamos a tu disposición</p>
+</section>
+
+
+<div class="panel-gold">
+  <form action="{{ url_for('contacto') }}" method="post" enctype="multipart/form-data" class="row g-3 form-gold">
+    <div class="col-md-6">
+      <label class="form-label">Nombre</label>
+      <input type="text" class="form-control" name="nombre" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Teléfono</label>
+      <input type="tel" class="form-control" name="telefono" placeholder="Opcional si pones email">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" name="email" placeholder="Opcional si pones teléfono">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Asunto</label>
+      <input type="text" class="form-control" name="asunto">
+    </div>
+    <div class="col-12">
+      <label class="form-label">Mensaje</label>
+      <textarea class="form-control" rows="4" name="mensaje" required></textarea>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Adjuntar imagen (opcional)</label>
+      <input type="file" class="form-control" name="adjunto" accept=".png,.jpg,.jpeg,.webp,.gif">
+    </div>
+    <div class="col-12">
+      <div class="d-grid">
+        <button type="submit" class="btn btn-military">Enviar</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{# ====== Tus consultas con respuesta (si has iniciado sesión) ====== #}
+{% if mis_contactos and mis_contactos|length %}
+<div class="panel-gold mt-4">
+  <div class="titulo-seccion">
+    <h2>Mis consultas</h2>
+    <div class="subtitulo">Respuestas del administrador</div>
+  </div>
+
+  {% for c in mis_contactos %}
+    <div class="mb-3">
+      <div class="d-flex justify-content-between">
+        <strong>{{ c.asunto or 'Consulta' }}</strong>
+        <small class="text-muted">{{ c.creado_en }}</small>
+      </div>
+      <div class="small text-light">{{ c.mensaje }}</div>
+
+      {% if c.admin_respuesta %}
+        <div class="mt-2 panel-gold">
+          <div class="small text-gold fw-bold">Respuesta del administrador</div>
+          <div>{{ c.admin_respuesta }}</div>
+        </div>
+
+        {# ⬇️ Botón eliminar SOLO si está respondida #}
+        {% if c.admin_estado == 'respondido' %}
+          <div class="d-flex justify-content-end mt-2">
+            <form action="{{ url_for('mis_consulta_eliminar', cid=c.id) }}" method="post">
+              <button class="btn btn-sm btn-outline-danger"
+                      onclick="return confirm('¿Eliminar esta consulta respondida?');">
+                Eliminar
+              </button>
+            </form>
+          </div>
+        {% endif %}
+
+      {% else %}
+        <div class="small text-muted mt-2">Pendiente de respuesta.</div>
+      {% endif %}
+    </div>
+
+    {% if not loop.last %}
+      <hr class="text-muted">
+    {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+
+
+
+{% endblock %}

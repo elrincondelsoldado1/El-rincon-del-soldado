@@ -1,0 +1,1821 @@
+:root {
+  /* Paleta de colores unificada */
+  --primary: #d4af37; /* Dorado militar */
+  --primary-light: #f8e08e;
+  --primary-dark: rgb(122, 102, 0);
+  --secondary: #0f62fe; /* Azul militar */
+  --dark: #121212; /* Fondo menos oscuro */
+  --darker: #0a0a0a;
+  --light: #f5f5f5;
+  --bg-opacity: rgba(30, 30, 30, 0.85);
+  --card-bg: rgba(40, 40, 40, 0.8);
+}
+
+/* Fuente global */
+body, h1, h2, h3, h4, h5, h6, p, a, button, input, .btn {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+
+/* Base unificada */
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--light);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--dark);
+  background-image: url('../img/fondo\ neutal.png');
+  background-attachment: fixed;
+}
+
+
+
+/* Navbar mejorado - Combinación de ambos */
+.navbar {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(0, 24, 11, 0.9) !important;
+  border-bottom: 2px solid var(--primary);
+  padding: 0.5rem 1rem;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  color: var(--primary) !important;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.nav-link {
+  color: #e0e0e0 !important;
+  font-weight: 500;
+  margin: 0 8px;
+  padding: 8px 12px !important;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--primary) !important;
+  background-color: rgba(212, 175, 55, 0.1);
+  transform: translateY(-2px);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: width 0.3s;
+}
+
+.nav-link:hover::after {
+  width: calc(100% - 24px);
+}
+
+
+/* Hero Section combinada */
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 3rem;
+  margin: 2rem;
+  background: var(--bg-opacity);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--primary);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6),
+              0 0 0 1px rgba(212, 175, 55, 0.3);
+  text-align: center;
+  animation: fadeInUp 1s ease;
+}
+
+/* Mensaje de login mejorado */
+.login-alert {
+  background: rgba(212, 175, 55, 0.15);
+  border-left: 4px solid var(--primary);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  animation: pulse 2s infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-alert::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Tarjetas unificadas */
+.card-menu {
+  background: var(--card-bg);
+  border-radius: 15px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  backdrop-filter: blur(8px);
+  transition: all 0.4s ease;
+  height: 100%;
+  overflow: hidden;
+}
+
+.card-menu:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+  border-color: var(--primary);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 2px solid var(--primary);
+}
+
+.card-title {
+  color: var(--primary);
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+}
+
+/* Galería mejorada */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.gallery-item {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+}
+
+.gallery-item:hover::after {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.1);
+}
+
+
+
+
+/* Formularios unificados */
+.auth-form {
+  background: var(--bg-opacity);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2.5rem;
+  border: 1px solid var(--primary);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.form-control {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+}
+
+/* Botones mejorados */
+.btn-military {
+  background: linear-gradient(to right, var(--primary-dark), var(--primary));
+  color: var(--dark);
+  font-weight: 600;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-military:hover {
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+.btn-military::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.5s ease;
+}
+
+.btn-military:hover::before {
+  left: 100%;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .navbar-collapse {
+    background-color: var(--bg-opacity);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+  }
+  
+  .hero-content {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .navbar-brand {
+    font-size: 1.3rem;
+  }
+  
+  .navbar-brand img {
+    height: 30px;
+  }
+}
+
+
+
+
+/* Centrado mejorado */
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 800px;
+   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  box-shadow: 
+    0 0 20px 10px rgba(212, 175, 55, 0.2),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Mejora la animación para que sea más suave */
+@keyframes camoMovement {
+  0% { background-position: 0% 0%; }
+  25% { background-position: 25% 15%; }
+  50% { background-position: 50% 5%; }
+  75% { background-position: 75% 15%; }
+  100% { background-position: 100% 0%; }
+}
+
+
+section div h2{
+  color: #d4af37;
+}
+
+
+
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 1rem;
+}
+
+/* Efectos dinámicos discretos */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.floating-elements {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.floating-element {
+  position: absolute;
+  opacity: 0.3;
+  animation: float 6s infinite ease-in-out;
+}
+
+.floating-element:nth-child(1) {
+  top: 20%;
+  left: 10%;
+  width: 40px;
+  height: 40px;
+  background: url('../img/imagen1.png') no-repeat;
+  animation-delay: 0s;
+}
+
+.floating-element:nth-child(2) {
+  top: 60%;
+  left: 80%;
+  width: 30px;
+  height: 30px;
+  background: url('../img/icono-escudo.png') no-repeat;
+  animation-delay: 1s;
+}
+
+.floating-element:nth-child(3) {
+  top: 30%;
+  left: 85%;
+  width: 25px;
+  height: 25px;
+  background: url('../img/icono-estrella.png') no-repeat;
+  animation-delay: 2s;
+}
+
+/* Efecto de partículas sutil */
+.particles-js-canvas-el {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0.3;
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+  .hero-content {
+    padding: 1.5rem;
+  }
+  
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .floating-element {
+    display: none; 
+  }
+}
+
+
+
+/* Efecto de camuflaje animado */
+@keyframes camoMovement {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+.hero-section {
+  position: relative;
+  background: 
+    url('../img/logoredimensionado.jpg') repeat,
+    linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.3));
+  background-size: 600px;
+  animation: camoMovement 200s infinite linear;
+  overflow: hidden;
+  mask-image: radial-gradient(circle at center, white 90%, transparent 95%);
+  -webkit-mask-image: radial-gradient(circle at center, white 90%, transparent 95%);
+}
+
+
+/* Galería mejorada */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto; /* 🔥 esto centra la galería */
+}
+
+
+.gallery-item {
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.gallery-item:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+
+
+
+
+.navbar-brand {
+  display: inline-flex;
+  align-items: baseline; /* Alinea desde la base del texto */
+}
+
+.navbar-brand i {
+  position: relative;
+  top: -0.1em; /* Ajuste fino */
+  font-size: 1.05em;
+  margin-right: 0.5rem;
+}
+
+
+.navbar-brand:hover i {
+  transform: rotate(8deg);
+}
+
+
+
+
+/* Botón de INICIO */
+.inicio-special {
+    position: relative;
+    margin-right: 15px;
+}
+
+.inicio-highlight {
+    padding: 5px 12px;
+    background: rgba(90, 110, 60, 0.2); /* Verde militar difuminado */
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(60, 80, 40, 0.3);
+    transition: all 0.3s ease;
+}
+
+.inicio-special:hover .inicio-highlight {
+    background: rgba(90, 110, 60, 0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Estilo 3D para el logo de "Serviam" en el login */
+.auth-form img {
+    border-radius: 15px; /* Bordes redondeados */
+    transform: perspective(500px) rotateY(-5deg); /* Inclinación 3D */
+    box-shadow: none;
+    border: none;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.3); /* Fondo semitransparente */
+    padding: 5px;
+}
+
+.auth-form .text-center img {
+  padding: 5px;
+  background: transparent;
+}
+
+
+/* Estilos mejorados para formularios */
+.input-label {
+  color: #d4af37;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  margin-bottom: 8px;
+  display: block;
+  letter-spacing: 0.5px;
+}
+
+.input-field {
+  background: rgba(255,255,255,0.1);
+  border: 2px solid #d4af37;
+  color: white;
+  padding: 12px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  background: rgba(255,255,255,0.2);
+  border-color: #f8e08e;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+  outline: none;
+}
+
+.text-gold {
+  color: #d4af37;
+}
+
+.text-light {
+  color: #f5f5f5;
+}
+
+/* Mejora para botones */
+.btn-military {
+  background: linear-gradient(135deg, #d4af37 0%, #a78a2a 100%);
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.hero-content img {
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.hero-content img:hover {
+  transform: scale(1.05);
+}
+
+
+.hero-img {
+  max-width: 280px;
+  border-radius: 10px;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.hero-img:hover {
+  transform: scale(1.03);
+}
+
+.hero-content h1,
+.hero-content p {
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+.hero-content .btn {
+  min-width: 180px;
+}
+
+
+/* Animación de los iconos */
+
+:root {
+  --oro-elegante: #e0c572;
+  --gris-letra: #e2e2e2;
+  --fondo-militar: #1c1f1a;
+}
+
+/* Íconos suaves */
+.animate-icons-v2 i {
+  font-size: 2.5rem;
+  color: var(--oro-elegante);
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Título principal ajustado */
+.hero-content h1 {
+  font-size: 2.5rem;
+}
+
+/* Frase slogan */
+.slogan {
+  font-size: 1.1rem;
+  color: var(--gris-letra);
+  opacity: 0.95;
+}
+
+/* Botones de acceso iguales */
+.btn-military,
+.btn-outline-light {
+  background-color: var(--oro-elegante);
+  color: #000;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-military:hover,
+.btn-outline-light:hover {
+  background-color: #d4af37;
+  color: #000;
+}
+
+
+/* Botones de acceso uniformes */
+.btn-acceso {
+  background-color: #e0c572;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 10px 24px;
+  min-width: 160px;
+  transition: all 0.3s ease;
+}
+
+.btn-acceso:hover {
+  background-color: #dbb026;
+  color: #000;
+  box-shadow: 0 0 10px rgba(229, 196, 8, 0.3);
+}
+
+.btn-acceso:active {
+  transform: scale(0.96);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Pie de página */
+
+.footer-profesional {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', sans-serif;
+  border-top: 3px solid #ffd700;
+}
+
+.footer-profesional h5 {
+  color: #ffd700;
+}
+
+.footer-profesional a {
+  color: #e0e0e0;
+  text-decoration: none;
+}
+
+.footer-profesional a:hover {
+  color: #ffd700;
+  text-decoration: underline;
+}
+
+.footer-profesional .fab {
+  color: #ffd700;
+  transition: transform 0.3s;
+}
+
+.footer-profesional .fab:hover {
+  transform: scale(1.2);
+}
+
+
+
+
+/* Enlaces dentro de tarjetas admin al estilo dorado */
+.auth-form a { color: var(--primary); text-decoration: none; }
+.auth-form a:hover { opacity: .9; text-decoration: underline; }
+.table thead th { border-bottom: 1px solid rgba(212,175,55,.25); }
+
+
+/* Select pequeño, oscuro y con borde dorado (Admin) */
+.select-militar {
+  max-width: 380px;
+  background: #2a2a2a;
+  color: #f5f5f5;
+  border: 1px solid #d4af37;
+  border-radius: 10px;
+}
+.select-militar:focus {
+  border-color: #f8e08e;
+  box-shadow: 0 0 0 0.2rem rgba(212,175,55,.25);
+}
+
+
+/* =========================
+   RESPONSIVE GLOBAL
+   ========================= */
+:root{
+  --container-pad: 1rem;
+}
+
+img { max-width: 100%; height: auto; }
+
+/* Contenedores: más respiro en móvil */
+@media (max-width: 992px){
+  .container { padding-left: var(--container-pad); padding-right: var(--container-pad); }
+  .hero-content { padding: 1.25rem; }
+  .navbar-brand { font-size: 1.15rem; }
+}
+
+/* Tarjetas del menú: compactar en móvil */
+@media (max-width: 768px){
+  .menu-card img { height: 120px; }
+  .menu-card .body { padding: .65rem .75rem; }
+  .menu-card h5 { font-size: .95rem; }
+  .menu-price { font-size: .95rem; }
+}
+
+/* =========================
+   ADMIN: tabla -> tarjetas en móvil
+   ========================= */
+@media (max-width: 992px){
+  /* Ocultar cabecera, cada fila será una tarjeta */
+  table.table thead { display: none; }
+  table.table tbody tr{
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(212,175,55,.3);
+    border-radius: 10px;
+    background: rgba(40,40,40,.85);
+    overflow: hidden;
+  }
+  table.table tbody td{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .75rem;
+    padding: .6rem .9rem !important;
+    border: none !important;
+  }
+  table.table tbody td::before{
+    content: attr(data-label);
+    color: #d4af37;
+    font-weight: 600;
+  }
+  /* Imagen más pequeña en admin */
+  table.table tbody td img{ height: 36px; border-radius: 6px; }
+
+  /* Bloque de acciones a ancho completo y apilado */
+  .admin-actions{
+    gap: .5rem;
+    justify-content: stretch;
+    padding: .6rem .9rem;
+  }
+  .admin-actions .btn{ width: 100%; min-width: auto; }
+}
+
+/* Un poco más compacto aún en <= 480px */
+@media (max-width: 480px){
+  .hero-content .display-6, .hero-content .display-5 { font-size: 1.5rem; }
+  .section-title { font-size: 1.05rem; }
+}
+
+
+
+/* ====== UI coherente (títulos, paneles y campos) ====== */
+.page-hero{
+  position: relative;
+  margin: 0 0 1.25rem;
+  text-align: center;
+}
+.page-title{
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.2;
+  font-size: clamp(2rem, 3.6vw + .6rem, 3.2rem);
+  background: linear-gradient(90deg,#8c6a00, #f0c24b, #ffe08e, #f0c24b, #8c6a00);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  text-shadow: 0 1px 0 rgba(0,0,0,.45);
+  animation: pgshine 5.5s linear infinite;
+}
+@keyframes pgshine { to { background-position:-220% 0; } }
+.page-underline{
+  width: 140px; height: 3px; margin:.9rem auto 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg,#8c6a00,#f0c24b,#8c6a00);
+  box-shadow: 0 0 14px rgba(240,194,75,.45);
+}
+
+.form-panel{
+  max-width: 950px;
+  margin: 0 auto 1.25rem;
+  background: rgba(32,32,32,.93);
+  border: 1.5px solid var(--primary);
+  border-radius: 18px;
+  padding: 2rem;
+  box-shadow: 0 2px 24px rgba(224,197,114,.10);
+}
+.form-label-gold{
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: .35rem;
+}
+
+.form-select, .form-control{
+  background-color: rgba(255,255,255,0.06);
+  border: 1px solid rgba(212,175,55,.35);
+  color: #f5f5f5;
+}
+.form-select:focus, .form-control:focus{
+  border-color: var(--primary);
+  box-shadow: 0 0 0 .25rem rgba(212,175,55,.25);
+}
+fieldset.legend-gold legend{
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Botón dorado ya lo tienes como .btn-military */
+
+/* Contenedor principal de la tabla */
+table {
+    border: 2px solid gold; /* Borde dorado */
+    border-radius: 12px; /* Bordes redondeados */
+    overflow: hidden; /* Para que el borde afecte también al interior */
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo semitransparente estilo web */
+    width: 100%;
+}
+
+/* Encabezados de la tabla */
+thead th {
+    background-color: rgba(218, 165, 32, 0.9); /* Dorado opaco */
+    color: black; /* Texto oscuro para contraste */
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 12px;
+    border-bottom: 2px solid gold;
+}
+
+/* Filas de la tabla */
+tbody tr {
+    border-bottom: 1px solid gold;
+}
+
+tbody td {
+    padding: 10px;
+    text-align: center;
+    color: white;
+}
+
+/* Hover en las filas */
+tbody tr:hover {
+    background-color: rgba(255, 215, 0, 0.15); /* Dorado suave */
+}
+
+/* Botones dentro de la tabla */
+table button {
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* Encabezado "Sección" */
+label[for="section-select"], 
+#section-select {
+    border: 2px solid gold;
+    border-radius: 8px;
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+    padding: 5px 10px;
+}
+
+/* Filtros admin */
+.admin-filters{
+  display:flex; gap:.75rem; align-items:center; flex-wrap:wrap;
+}
+.admin-filters input,
+.admin-filters select{
+  border:2px solid gold; border-radius:10px; padding:8px 12px;
+  background:rgba(0,0,0,.6); color:#fff; outline:none;
+}
+.admin-filters input::placeholder{ color:#c8c8c8; }
+.admin-filters button{
+  border:2px solid gold; border-radius:10px; padding:8px 14px;
+  background:rgba(218,165,32,.15); color:#ffd700; font-weight:700;
+  cursor:pointer;
+}
+.admin-filters button:hover{ background:rgba(218,165,32,.25); }
+
+/* Tabla admin */
+.admin-table{
+  border:2px solid gold; border-radius:12px; overflow:hidden;
+  background-color:rgba(0,0,0,0.6);
+}
+.admin-table thead th{
+  background-color:rgba(255,215,0,0.9);
+  color:black; font-weight:bold; font-size:1.1rem;
+  text-align:center; padding:12px;
+  border-bottom:2px solid gold;
+}
+
+
+/* ============= Admin: tamaño y coherencia ============= */
+.admin-filters{
+  display:flex; gap:1rem; align-items:center; flex-wrap:wrap;
+  margin: 14px 0 18px;
+}
+.admin-filters input,
+.admin-filters select{
+  border:2px solid var(--primary); border-radius:12px;
+  padding:12px 14px; font-size:1.05rem; line-height:1.2;
+  background:rgba(0,0,0,.55); color:#fff; outline:none;
+}
+.admin-filters button{
+  border:2px solid var(--primary); border-radius:12px;
+  padding:12px 18px; font-weight:800; font-size:1.05rem;
+  background:rgba(212,175,55,.18); color:#ffd700; cursor:pointer;
+}
+.admin-filters button:hover{ background:rgba(212,175,55,.28); }
+
+/* Tabla más grande y cabecera sticky */
+.table-responsive{
+  border: 1.5px solid rgba(212,175,55,.35);
+  border-radius:16px; padding:10px;
+  background: rgba(32,32,32,.55);
+}
+.admin-table{
+  border:2px solid var(--primary); border-radius:14px; overflow:hidden;
+  background-color:rgba(0,0,0,0.62);
+  font-size:1.02rem;
+}
+.admin-table thead th{
+  position: sticky; top: 0; z-index: 2;
+  background: linear-gradient(180deg, rgba(255,215,0,.95), rgba(196,160,30,.9));
+  color:#1a1a1a; font-weight:900; font-size:1.08rem;
+  padding:16px 12px; letter-spacing:.2px; text-align:center;
+  border-bottom:2px solid var(--primary);
+}
+.admin-table tbody td{
+  padding:16px 12px; vertical-align:middle; text-align:center;
+}
+.admin-table tbody tr{ border-bottom:1px solid rgba(255,215,0,.2); }
+.admin-table tbody tr:hover{ background:rgba(255,215,0,.10); }
+
+/* Botones dentro de la tabla un poco más grandes */
+.admin-actions .btn{ padding:.55rem .8rem; font-weight:700; }
+
+/* ======= Responsive ======= */
+/* 1) En tablets, mantenemos tabla con scroll horizontal si hiciera falta */
+@media (max-width: 992px){
+  .table-responsive{ overflow-x:auto; }
+  .admin-table{ font-size:1rem; }
+  .admin-table thead th{ font-size:1.05rem; padding:14px 10px; }
+  .admin-table tbody td{ padding:14px 10px; }
+}
+
+/* 2) En móvil, cada fila es tarjeta y mostramos la “cabecera” con data-label */
+@media (max-width: 768px){
+  .admin-table thead{ display:none; }
+  .admin-table tbody tr{
+    display:block; margin:0 0 1rem; border:1px solid rgba(212,175,55,.35);
+    border-radius:12px; background:rgba(40,40,40,.9);
+  }
+  .admin-table tbody td{
+    display:flex; justify-content:space-between; align-items:center;
+    gap:.75rem; padding:.75rem 1rem; border:none !important;
+  }
+  .admin-table tbody td::before{
+    content:attr(data-label); color:#ffd700; font-weight:800; margin-right:1rem;
+    text-align:left;
+  }
+  .admin-actions{ flex-direction:column; gap:.5rem; }
+  .admin-actions .btn{ width:100%; }
+}
+
+/* ===== Botones de acciones coherentes ===== */
+.admin-actions {
+  display: flex;
+  flex-direction: column; /* Cada botón en su línea */
+  align-items: stretch; /* Todos el mismo ancho */
+  gap: 0.4rem; /* Espacio entre botones */
+}
+
+.admin-actions .btn {
+  width: 100%;
+  text-align: center;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+/* En pantallas grandes, mantenemos columna pero más compacta */
+@media (min-width: 992px) {
+  .admin-actions {
+    max-width: 180px; /* Ajusta el ancho de la columna de acciones */
+    margin-left: auto;
+  }
+}
+
+/* Select militar - mismo estilo que los filtros */
+.select-militar {
+  max-width: 420px;                 /* ancho coherente */
+  background: rgba(0,0,0,0.55);     /* mismo fondo que filtros */
+  color: #fff;
+  border: 2px solid var(--primary); /* dorado */
+  border-radius: 12px;              /* mismo radio */
+  padding: 12px 14px;               /* misma altura que buscador */
+  font-size: 1.05rem;                /* mismo tamaño de letra */
+  font-weight: 500;
+  outline: none;
+}
+
+.select-militar:focus {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 0.25rem rgba(212,175,55,0.25);
+}
+
+/* Inputs y selects del panel admin - versión compacta y profesional */
+.admin-filters input,
+.admin-filters select,
+.select-militar {
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  padding: 6px 10px;           /* más compacto */
+  font-size: 0.95rem;          /* tamaño de texto más contenido */
+  font-weight: 500;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  outline: none;
+  height: auto;                /* altura ajustada automáticamente */
+}
+
+.admin-filters input::placeholder {
+  color: #ccc;
+}
+
+/* Botones de filtros compactos */
+.admin-filters button {
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: rgba(212,175,55,0.18);
+  color: #ffd700;
+  cursor: pointer;
+}
+
+.admin-filters button:hover {
+  background: rgba(212,175,55,0.28);
+}
+
+
+/* Etiqueta "Sección" más grande y coherente */
+.form-label.text-gold.fw-semibold {
+  font-size: 1.1rem;     /* más grande */
+  font-weight: 700;      /* más marcada */
+  letter-spacing: 0.5px; /* un poco más de aire */
+}
+
+
+/* Unificar estilo de select de categorías con el de Sección */
+select,
+select option {
+  background-color: #2b2b2b; /* gris igual que Sección */
+  color: #ffffff;            /* texto blanco */
+}
+
+select option:hover,
+select option:focus,
+select option:checked {
+  background-color: #3a3a3a; /* gris más claro al resaltar */
+  color: #ffd700;            /* texto dorado al resaltar */
+}
+
+
+/* Select de Sección más compacto y destacado */
+.select-militar {
+  max-width: 250px;        /* ancho más compacto */
+  padding: 10px 14px;      /* altura cómoda */
+  font-size: 1.05rem;      /* letra un poco más grande */
+  font-weight: 600;        /* texto más marcado */
+  border: 2px solid #d4af37; /* borde dorado más visible */
+  border-radius: 6px;
+  background-color: #2b2b2b; /* fondo gris oscuro */
+  color: #ffffff;
+}
+
+
+/* Ajuste del label 'Sección' */
+.mb-3 label.form-label.text-gold.fw-semibold {
+    font-size: 1.4rem !important; /* tamaño más grande */
+}
+
+/* Fondo y estilo del select igual al buscador */
+#admin-section.select-militar {
+    background-color: #2b2b2b !important; /* mismo gris del buscador */
+    color: #ffffff !important;
+    border: 1px solid #d4af37 !important;
+    border-radius: 6px !important;
+    max-width: 250px; /* más compacto */
+}
+
+/* Columna de Acciones: ancho fijo y alineada a la derecha */
+.col-acciones { width: 260px; }
+
+/* Contenedor de acciones debajo de "Acciones" */
+td[data-label="Acciones"] .admin-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;   /* pegado a la derecha */
+  gap: .55rem;             /* separación uniforme */
+  width: 100%;
+  max-width: 260px;
+  margin-left: auto;
+}
+
+/* Cada bloque (form/enlace) ocupa todo el ancho y se apila */
+td[data-label="Acciones"] .admin-actions form{
+  display: flex;
+  flex-direction: column;  /* select arriba, botón debajo */
+  gap: .45rem;
+  width: 100%;
+  margin: 0;
+}
+
+/* Mismo tamaño para todos: select y botones */
+td[data-label="Acciones"] .admin-actions select,
+td[data-label="Acciones"] .admin-actions .btn{
+  width: 100% !important;
+  height: 40px;
+  padding: 0 .9rem;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+
+
+/* Centrado vertical del texto en botones */
+td[data-label="Acciones"] .btn {
+    display: flex;
+    align-items: center;   /* centra verticalmente el texto */
+    justify-content: center; /* centra horizontalmente */
+    height: 40px;          /* mismo alto que antes */
+    line-height: normal;   /* evita desajustes de línea */
+}
+
+
+/* Fallback absoluto: centrar el contenedor interno */
+.th-acciones{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+
+
+.acciones-col {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.acciones-col .btn {
+  width: 140px;
+  height: 40px;
+  margin: 4px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-admin {
+  border: 2px solid gold;
+  color: white;
+  background-color: transparent;
+  font-weight: bold;
+}
+
+
+.acciones-col {
+  text-align: center;
+  vertical-align: top; /* Alinea el encabezado arriba */
+}
+
+.table th.acciones-col {
+  vertical-align: middle !important; /* Centra el texto "Acciones" en el header */
+}
+
+.acciones-col .btn {
+  width: 140px;
+  height: 40px;
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Placeholder global igual que en Carta */
+::placeholder {
+    color: rgba(255, 255, 255, 0.85) !important;
+    opacity: 1 !important;
+}
+
+
+
+.btn-warning {
+  background-color: #f1b800;
+  color: #000;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: .5rem;
+  border: none;
+}
+
+.btn-sand {
+  background-color: #d2b48c;
+  color: #000;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.btn-outline-info {
+  background-color: transparent;
+  border: 1px solid #00bcd4;
+  color: #00bcd4;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.btn-outline-danger {
+  background-color: transparent;
+  border: 1px solid #c9302c;
+  color: #c9302c;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+/* que el <select> parezca un botón */
+.select-like-btn{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-align-last: center;
+  border-radius: 12px;
+  padding: .65rem .9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+/* color del menú desplegable (lo respetan la mayoría de navegadores) */
+
+.select-like-btn option {
+  background: #232323; /* fondo oscuro acorde a tu tema */
+  color: #fff;
+  text-align: center;   /* centra horizontalmente */
+  padding: .6rem 0;     /* añade espacio vertical */
+}
+
+
+
+.admin-actions { overflow: visible; }           /* que no corte el menú */
+.role-select { position: relative; z-index: 10; }
+.role-toggle { position: relative; }
+.caret { position: absolute; right: 14px; }
+
+.role-menu{
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0; right: 0;
+  background: #232323;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px;
+  padding: .25rem 0;
+  z-index: 1000;                                  /* por encima de todo */
+  box-shadow: 0 8px 18px rgba(0,0,0,.35);
+}
+.role-select.open .role-menu{ display: block; }
+
+.role-opt{
+  width: 100%;
+  padding: .6rem .75rem;
+  text-align: center;           /* centrado perfecto */
+  color: #fff;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-weight: 700;
+}
+.role-opt:hover{ background: #2e2e2e; }
+
+
+
+/* Contenedor: coloca el select justo bajo el título y separa del bloque inferior */
+.seccion-group{
+  margin-top: .5rem;      /* separación con el título “Sección” */
+  margin-bottom: .75rem;  /* separación con el cuadro de abajo */
+}
+
+/* MISMO ESTILO QUE “Añadir producto al menú”, pero aplicado al <select> */
+select.btn-add.select-seccion{
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  display: inline-block;         /* pequeño y alineado a la izquierda */
+  width: auto;                   /* no ocupa todo el ancho */
+  padding: .45rem .9rem;         /* tamaño compacto */
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: .95rem;
+  cursor: pointer;
+
+  /* Colores iguales al botón añadir (ajusta a tu paleta si lo tienes en tu CSS) */
+  background: #d4b252;           /* dorado suave del botón añadir */
+  color: #1a1a1a;                /* texto oscuro como en el botón */
+  border: 1px solid rgba(212,175,55,.7);
+  box-shadow: 0 2px 0 rgba(0,0,0,.15);
+  transition: background .2s ease, transform .06s ease, box-shadow .2s ease;
+}
+
+/* Hover/active igual que el botón dinámico */
+select.btn-add.select-seccion:hover{
+  background:#c8a54f;
+  transform: translateY(-1px);
+}
+select.btn-add.select-seccion:active{
+  transform: translateY(0);
+  box-shadow: 0 1px 0 rgba(0,0,0,.18);
+}
+
+/* Menú desplegable acorde al tema (opciones centradas y legibles) */
+select.btn-add.select-seccion option{
+  background:#232323;
+  color:#fff;
+  text-align:center;
+  padding:.55rem 0;
+}
+
+
+/* Título "Sección" centrado y un poco más grande */
+.seccion-title{
+  font-size: 1.35rem;           /* más grande */
+  font-weight: 800;
+  text-align: center;
+  color: #d4af37;
+  margin-bottom: .35rem;
+}
+
+/* Centrar el botón/selector debajo del título */
+.seccion-control{
+  display: flex;
+  justify-content: center;      /* centrado horizontal */
+}
+
+/* Botón-select pequeño y con el estilo del de "Añadir producto" */
+select.btn-add.select-seccion{
+  appearance: none; -webkit-appearance:none; -moz-appearance:none;
+  padding: .55rem 1rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: .95rem;
+  cursor: pointer;
+  width: auto;                   /* no a todo el ancho */
+  border: 1px solid rgba(212,175,55,.7);
+  background: #d4b252;           /* mismo look que tu botón añadir */
+  color: #1a1a1a;
+  box-shadow: 0 2px 0 rgba(0,0,0,.15);
+  transition: background .2s, transform .06s, box-shadow .2s;
+}
+
+/* Hover/active como el botón añadir */
+select.btn-add.select-seccion:hover{ background:#c8a54f; transform: translateY(-1px); }
+select.btn-add.select-seccion:active{ transform: translateY(0); box-shadow: 0 1px 0 rgba(0,0,0,.18); }
+
+/* Estilo del menú desplegable (igual al de rol) */
+.select-like-btn option{
+  background:#232323;
+  color:#fff;
+  text-align:center;
+  padding:.6rem 0;
+}
+
+/* Más separación con la tabla de abajo */
+.seccion-header{ margin-bottom: 1rem; }   /* aumenta si quieres 1.25rem */
+
+
+/* Contenedor y título */
+.seccion-header, .seccion-control { position:relative; overflow:visible; }
+.seccion-title{ font-size:1.35rem; font-weight:800; text-align:center; color:#d4af37; margin-bottom:.4rem; }
+.seccion-control{ display:flex; justify-content:center; margin-bottom:1.2rem; }
+
+/* Botón */
+.section-select{ position:relative; z-index:20; }
+.section-toggle{
+  position:relative;
+  padding:.55rem 2.4rem .55rem 1rem; /* más espacio a la derecha para la flecha */
+  border-radius:14px; font-weight:700;
+  background:#d4b252; color:#1a1a1a; border:1px solid rgba(212,175,55,.7);
+  box-shadow:0 2px 0 rgba(0,0,0,.15);
+  transition:background .2s, transform .06s, box-shadow .2s;
+}
+.section-toggle:hover{ background:#c8a54f; transform:translateY(-1px); }
+.section-toggle:active{ transform:translateY(0); box-shadow:0 1px 0 rgba(0,0,0,.18); }
+/* quita cualquier aro/“selector” del foco */
+.section-toggle:focus{ outline:0; box-shadow:0 0 0 3px rgba(212,175,55,.22); }
+.section-toggle::-moz-focus-inner{ border:0; } /* Firefox */
+.section-toggle .caret{ position:absolute; right:12px; top:50%; transform:translateY(-50%); }
+
+/* Menú: más separación y ancho suficiente */
+.section-menu{
+  display:none;
+  position:absolute;
+  top:calc(100% + 10px);       /* separa más del botón */
+  left:50%;
+  transform:translateX(-50%);  /* centrado bajo el botón */
+  min-width: 220px;            /* evita que el texto sobresalga */
+  max-width: 300px;
+  background:#2b2b2b;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:14px;
+  padding:.35rem 0;
+  z-index:9999;
+  box-shadow:0 10px 20px rgba(0,0,0,.35);
+}
+.section-select.open .section-menu{ display:block; }
+.section-menu li{
+  list-style:none;
+  padding:.7rem 1rem;
+  text-align:center;
+  color:#fff;
+  cursor:pointer;
+  user-select:none;
+  white-space:nowrap;          /* las palabras no “saltan” fuera */
+}
+.section-menu li:hover{ background:#363636; border-radius:8px; }
+
+
+/* Título principal */
+.hero-content h1 {
+    color: #FFD95E; /* dorado cálido */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Iconos */
+.hero-content .fas {
+    color: #FFE58A;
+}
+
+/* Subtítulo */
+.hero-content .text-gold {
+    color: #4CAF50; /* verde militar */
+}
+
+/* Frase */
+.hero-content .slogan {
+    color: #CCCCCC;
+}
+
+/* Saludo */
+.hero-content .saludo {
+    font-size: 1.4rem;
+    color: #D4AF37;
+    font-weight: 500;
+}
+.hero-content .saludo strong {
+    color: #FFD700;
+    font-weight: 700;
+}
+
+/* Título más claro */
+.hero-content h1 {
+    background: linear-gradient(to right, #FFD700, #FFC107);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    position: relative;
+    display: inline-block;
+}
+
+.hero-content h1::after {
+    content: '';
+    display: block;
+    height: 3px;
+    width: 60%;
+    background: linear-gradient(to right, #FFD700, #FFC107);
+    margin: 5px auto 0;
+    border-radius: 2px;
+}
+
+/* Iconos con colores realistas */
+.cafe-icon-v2 {
+    background: linear-gradient(to bottom, #6F4E37, #D2B48C); 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.burger-icon-v2 {
+    background: linear-gradient(to bottom, #DAA520 40%, #8B4513 60%, #4CAF50 80%, #FF0000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Mesón Militar verde militar vivo */
+.text-meson {
+    color: #4CAF50; 
+    font-weight: bold;
+}
+
+
+/* Asegura que la barra esté por encima de todo */
+.navbar {
+  position: relative;
+  z-index: 3000;          /* > que cualquier overlay del hero */
+  overflow: visible;
+}
+
+/* El menú desplegable por encima del hero y partículas */
+.navbar .dropdown-menu {
+  z-index: 4000;          /* aún mayor */
+}
+
+/* Evita que contenedores recorten el menú */
+.navbar .container,
+.navbar .collapse {
+  overflow: visible;
+}
+
+/* Baja el z-index de capas del hero para no tapar el dropdown */
+.hero-section { position: relative; z-index: 1; }
+#particles-js    { position: absolute; inset: 0; z-index: 0; }
+.hero-content    { position: relative; z-index: 1; }
+
+
+
+:root{
+  --gold-xxl:#fff5c7;   /* brillo */
+  --gold-light:#f6e3a3; /* dorado claro */
+  --gold:#d4af37;       /* dorado clásico */
+  --gold-deep:#8a6b1f;  /* dorado oscuro */
+}
+
+/* Contenedor común SIN recuadro */
+.hero{
+  background: transparent!important;
+  border: none!important;
+  box-shadow: none!important;
+  border-radius: 0!important;
+  padding: 2.6rem 1rem 2.1rem;
+  text-align: center;
+}
+
+/* TÍTULO: dorado metálico + animación lenta */
+.hero .hero-title{
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: .6px;
+  font-size: clamp(28px, 3.4vw, 46px); /* un poco más grande */
+  background: linear-gradient(
+    90deg,
+    var(--gold-deep) 0%,
+    #b88d25 14%,
+    var(--gold) 28%,
+    var(--gold-xxl) 43%,   /* pico de brillo */
+    var(--gold) 58%,
+    #b88d25 72%,
+    var(--gold-deep) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldElegante 12s ease-in-out infinite; /* más lento */
+  text-shadow: 0 0 0 rgba(0,0,0,0); /* limpia bordes */
+}
+
+@keyframes goldElegante{
+  0%   { background-position:   0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position:   0% 50%; }
+}
+
+/* Separador con brillo que barre */
+.hero .gold-divider{
+  position: relative;
+  display:block;
+  width:140px;
+  height:5px;
+  margin:.95rem auto 0;
+  border-radius:999px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  overflow: hidden;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.35));
+}
+.hero .gold-divider::after{
+  content:"";
+  position:absolute;
+  top:-40%;
+  left:-25%;
+  width:25%;
+  height:180%;
+  background: radial-gradient(ellipse at center, var(--gold-xxl) 0%, rgba(255,255,255,0) 70%);
+  animation: sweep 4.5s linear infinite;
+}
+@keyframes sweep{
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(520%); }
+}
+
+/* SUBTÍTULO: muy legible y acorde al tema */
+.hero .hero-subtitle{
+  margin-top: 1rem;
+  display: inline-block;
+  padding: .35rem .8rem; /* menos alto y más compacto */
+  font-size: clamp(13px, 1.5vw, 18px); /* reducido */
+  font-weight: 600;
+  color: var(--gold-light);
+  background: linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.18));
+  border: 1px solid rgba(212,175,55,.28);
+  border-radius: 999px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  text-shadow: 0 1px 2px rgba(0,0,0,.8);
+}
+
+
+/* Footer compacto */
+.footer-profesional {
+  padding: 1.2rem 0 !important;   /* menos alto */
+  font-size: 0.95rem;
+}
+.footer-profesional h5 {
+  font-size: 1rem;
+  margin-bottom: .4rem;
+}
+.footer-profesional p,
+.footer-profesional a {
+  font-size: .9rem;
+}
+.footer-profesional hr {
+  margin: .7rem 0 !important;
+}
+.footer-profesional .small {
+  font-size: .8rem;
+}
+
+/* Espacio entre contenido y footer */
+main.container {
+  margin-bottom: 7rem !important;
+}
+
+
+
+/* --- Tarjeta translúcida oscura para secciones --- */
+.section-card{
+  background: rgba(0,0,0,.45);
+  border: 1px solid rgba(212,175,55,.30);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 1000px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 4px 15px rgba(0,0,0,.4);
+}
+
+/* Título dorado dentro de la tarjeta */
+.section-card h1{
+  color: #d4af37;            /* dorado de la web */
+  font-weight: 700;
+  margin-bottom: 1.1rem;
+  font-size: clamp(24px, 3vw, 36px);
+}
+
+/* Texto blanco legible */
+.section-card p{
+  color: #ffffff;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Subtítulos dentro de las tarjetas (Aviso legal, Cookies, etc.) */
+.section-card h2 {
+  font-size: 1.2rem;           /* más pequeño */
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: #d4af37;              /* dorado */
+  font-weight: 600;
+  border-left: 4px solid rgba(212, 175, 55, 0.6); /* línea decorativa */
+  padding-left: 0.6rem;
+}
+
+/* Resaltar palabras clave en las secciones legales */
+.section-card strong {
+  color: #d4af37;       /* dorado */
+  font-weight: 600;
+}
+
+
+
+/* --- Avatar un poco más grande --- */
+.navbar .nav-avatar,
+.navbar .dropdown-toggle > img{
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 2px solid rgba(212,175,55,.65);
+  box-shadow: 0 0 0 2px rgba(0,0,0,.6), inset 0 0 18px rgba(240,194,75,.18);
+}
+
+/* Opcional: alinear texto+avatar en el toggle sin cambiar estilo */
+.navbar .dropdown-toggle{ display:flex; align-items:center; gap:.5rem; }
+
+/* --- Dropdown oscuro acorde al tema --- */
+.navbar .dropdown-menu{
+  background: linear-gradient(180deg,#121212,#0b0b0b);
+  border: 1px solid rgba(212,175,55,.32);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(240,194,75,.16);
+  padding: .35rem;
+  min-width: 220px;
+}
+.navbar .dropdown-menu .dropdown-item{
+  color:#eaeaea;
+  border-radius:10px;
+  padding:.55rem .9rem;
+}
+.navbar .dropdown-menu .dropdown-item:hover,
+.navbar .dropdown-menu .dropdown-item:focus{
+  background: rgba(212,175,55,.12);
+  color:#fff;
+}
+.navbar .dropdown-menu .dropdown-item.active{
+  background: rgba(212,175,55,.18);
+  color:#fff;
+}
+.navbar .dropdown-menu .dropdown-divider{
+  border-top-color: rgba(212,175,55,.18);
+}
+
+/* Mejora sutil del caret del toggle para que se vea en oscuro */
+.navbar .dropdown-toggle::after{
+  border-top-color:#d4af37;
+  filter: drop-shadow(0 0 2px rgba(212,175,55,.35));
+}
+
+
+.btn-pay { min-width: 220px; }
+  @media (max-width: 576px){ .btn-pay{ width:100%; } }
+
+

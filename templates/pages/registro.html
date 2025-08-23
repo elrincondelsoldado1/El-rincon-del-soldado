@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 720px;">
+  <div class="auth-form mx-auto">
+    <!-- Mismo estilo que en iniciar sesión -->
+    <h1 class="mb-3 text-center text-gold">Crear cuenta</h1>
+    <p class="lead text-center mb-4">Regístrate para disfrutar de todas las funcionalidades</p>
+
+    <form method="POST" novalidate>
+      <!-- Nombre -->
+      <div class="mb-3">
+        <label for="nombre" class="input-label">Nombre</label>
+        <input
+          type="text"
+          class="form-control input-field"
+          id="nombre"
+          name="nombre"
+          value="{{ nombre or '' }}"
+          required
+        >
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="input-label">Correo electrónico</label>
+        <input
+          type="email"
+          class="form-control input-field"
+          id="email"
+          name="email"
+          value="{{ email or '' }}"
+          required
+        >
+      </div>
+
+      <!-- Contraseña -->
+      <div class="mb-3">
+        <label for="password" class="input-label">Contraseña</label>
+        <input
+          type="password"
+          class="form-control input-field"
+          id="password"
+          name="password"
+          minlength="6"
+          required
+        >
+      </div>
+
+      <!-- Tipo de cuenta -->
+      <div class="mb-3">
+        <label for="rol" class="input-label">Tipo de cuenta</label>
+        <select class="form-control input-field" id="rol" name="rol" required>
+          <option value="usuario" {{ 'selected' if (rol or 'usuario') == 'usuario' else '' }}>Cliente</option>
+          <option value="admin"   {{ 'selected' if (rol or 'usuario') == 'admin'   else '' }}>Administrador</option>
+        </select>
+        <small class="text-secondary">Elige “Administrador” solo si tienes el código.</small>
+      </div>
+
+      <!-- Código de administrador (solo si elige admin) -->
+      <div class="mb-3" id="adminCodeGroup" style="display:none;">
+        <label for="admin_code" class="input-label">Código de administrador</label>
+        <input
+          type="text"
+          class="form-control input-field"
+          id="admin_code"
+          name="admin_code"
+          placeholder="Introduce el código de administrador"
+        >
+        <small class="text-secondary">Pídeselo al responsable del sitio.</small>
+      </div>
+
+      <button type="submit" class="btn btn-military btn-lg w-100">
+        Crear cuenta
+      </button>
+    </form>
+
+    <!-- Enlace inferior con mismo tamaño y color dorado -->
+    <div class="text-center mt-3">
+      <small>¿Ya tienes cuenta?
+        <a href="{{ url_for('login') }}" class="text-gold" style="text-decoration: none;">
+          Inicia sesión
+        </a>
+      </small>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const rolSelect   = document.getElementById('rol');
+    const adminGroup  = document.getElementById('adminCodeGroup');
+    const adminInput  = document.getElementById('admin_code');
+
+    function toggleAdminCode() {
+      const isAdmin = rolSelect.value === 'admin';
+      adminGroup.style.display = isAdmin ? 'block' : 'none';
+      if (isAdmin) {
+        adminInput.setAttribute('required', 'required');
+      } else {
+        adminInput.removeAttribute('required');
+        adminInput.value = '';
+      }
+    }
+
+    rolSelect.addEventListener('change', toggleAdminCode);
+    toggleAdminCode(); // estado inicial
+  })();
+</script>
+{% endblock %}

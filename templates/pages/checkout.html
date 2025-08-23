@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Resumen del Pedido{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h2 class="mb-3 text-gold">🧾 Resumen de tu pedido</h2>
+
+  {% if carrito and carrito|length %}
+    <div class="card bg-dark text-white mb-4">
+      <div class="card-body">
+
+        {% for pedido in carrito %}
+          {# ---------- Normalizaciones seguras ---------- #}
+          {% set d = pedido.detalle if pedido.detalle is defined else None %}
+          {% set ent = pedido.entrante or (d.entrante.nombre if d and d.entrante else None) %}
+          {% set pri = pedido.principal or (d.principal.nombre if d and d.principal else None) %}
+          {% set beb = pedido.bebida or (d.bebida.nombre if d and d.bebida else None) %}
+          {% set pos = pedido.postre or (d.postre.nombre if d and d.postre else None) %}
+
+          {% set base_precio = (
+                pedido.precio_menu
+                if (pedido.precio_menu is defined and pedido.precio_menu is not none)
+                else pedido.precio
+             ) | float %}
+
+          {# ---- ÚNICA imagen a mostrar (calculamos su URL) ---- #}
+          {% set img = pedido.imagen or '' %}
+          {% if img %}
+            {% if img.startswith('http') %}
+              {% set img_url = img %}
+            {% elif img.startswith('img/') or img.startswith('/') %}
+              {% set img_url = url_for('static', filename=img if img.startswith('img/') else img.lstrip('/')) %}
+            {% else %}
+              {% set img_url = url_for('static', filename='img/' ~ img) %}
+            {% endif %}
+          {% else %}
+            {% set img_url = url_for('static', filename='img/placeholder.webp') %}
+          {% endif %}
+
+          <div class="mb-3 pb-3 border-bottom border-secondary">
+            <div class="d-flex align-items-start gap-3">
+
+              <div style="flex-shrink:0;">
+                <img src="{{ img_url }}"
+                     alt="{{ pedido.menu_nombre or pedido.nombre or 'Producto' }}"
+                     class="img-fluid rounded"
+                     style="width:110px;height:80px;object-fit:cover;border:1px solid rgba(212,175,55,.25)">
+              </div>
+
+              <div style="flex-grow:1;">
+                <div class="d-flex align-items-baseline gap-2 flex-wrap">
+                  <strong class="text-gold">
+                    {{ pedido.menu_nombre or pedido.nombre or 'Producto' }}
+                  </strong>
+                  <span class="text-muted">({{ '%.2f'|format(base_precio) }} €)</span>
+                </div>
+
+                <ul class="list-unstyled mb-0 mt-2">
+                  {% if ent %}<li><b>Entrante:</b> {{ ent }}</li>{% endif %}
+                  {% if pri %}<li><b>Principal:</b> {{ pri }}</li>{% endif %}
+                  {% if beb %}<li><b>Bebida:</b> {{ beb }}</li>{% endif %}
+                  {% if pos %}<li><b>Postre:</b> {{ pos }}</li>{% endif %}
+
+                  {% if pedido.extras and pedido.extras|length %}
+                    <li class="mt-1">
+                      <b>Extras:</b>
+                      <ul class="mb-0">
+                        {% for extra in pedido.extras %}
+                          {% set ex_precio = (extra.precio if extra.precio is defined else 0) | float %}
+                          <li>
+                            {{ extra.nombre }}
+                            <span class="text-muted">(+{{ '%.2f'|format(ex_precio) }} €)</span>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+          <a href="{{ url_for('vaciar_carrito') }}" class="btn btn-outline-danger">Vaciar carrito</a>
+          <h4 class="mb-0">Total: <span class="text-gold">{{ '%.2f'|format(total|float) }} €</span></h4>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <!-- Stripe -->
+          <form action="{{ url_for('pago_stripe') }}" method="post" class="d-inline">
+            <button class="btn btn-success">Pagar con tarjeta</button>
+          </form>
+
+          <!-- Pagar al recoger -->
+          <form action="{{ url_for('pagar_en_local') }}" method="post" class="d-inline">
+            <button class="btn btn-outline-warning">Pagar al recoger</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  {% else %}
+    <div class="alert alert-warning">No tienes productos en el carrito.</div>
+  {% endif %}
+</div>
+{% endblock %}
