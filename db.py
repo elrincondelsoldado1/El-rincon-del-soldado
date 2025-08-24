@@ -3,6 +3,7 @@ import os
 import psycopg2
 from psycopg2 import extras
 
+
 def get_db_connection():
     """
     - En Render usará DATABASE_URL (con SSL).

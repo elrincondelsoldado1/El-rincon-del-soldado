@@ -26,3 +26,5 @@ Thumbs.db
 static/uploads/
 static/img/avatars/
 static/uploads/contacto/
+
+dump.sql

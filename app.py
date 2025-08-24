@@ -24,7 +24,7 @@ from db import get_db_connection as get_connection  # tu helper DB
 # ───────── Config general ─────────
 app = Flask(__name__)
 load_dotenv()
-app.secret_key = os.getenv('SECRET_KEY', 'musa')
+app.secret_key = os.getenv('SECRET_KEY', '0yE2PYR4uqxebg1nUIC8gC1WEWPsbaHgR7UnCkjJ041D4zCBH_LG-2punJ0XlkYR')
 bcrypt = Bcrypt(app)
 
 #PAGOS STRIPE MODO PRUEBA
