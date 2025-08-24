@@ -50,12 +50,14 @@
 
       <!-- Tipo de cuenta -->
       <div class="mb-3">
-        <label for="rol" class="input-label">Tipo de cuenta</label>
-        <select class="form-control input-field" id="rol" name="rol" required>
-          <option value="usuario" {{ 'selected' if (rol or 'usuario') == 'usuario' else '' }}>Cliente</option>
-          <option value="admin"   {{ 'selected' if (rol or 'usuario') == 'admin'   else '' }}>Administrador</option>
-        </select>
-        <small class="text-secondary">Elige “Administrador” solo si tienes el código.</small>
+     <label class="form-label">Tipo de cuenta</label>
+
+<!-- Solo mostramos "Cliente" y lo dejamos no editable -->
+<input class="form-control" value="Cliente" readonly>
+
+<!-- Enviamos el rol real en oculto -->
+<input type="hidden" name="rol" value="cliente">
+
       </div>
 
       <!-- Código de administrador (solo si elige admin) -->
