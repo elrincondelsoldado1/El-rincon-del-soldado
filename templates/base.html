@@ -53,54 +53,56 @@
           
           <!-- DROPDOWN USUARIO CON MINI AVATAR -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {% if session.get('avatar') %}
-              <img src="{{ url_for('static', filename=session['avatar']) }}"
-              alt="avatar"
-              style="width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid #d4af37;">
-              {% else %}
-              <img src="{{ url_for('static', filename='img/avatars/default.webp') }}"
-              alt="avatar"
-              style="width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid #d4af37;">
-              {% endif %}
-              <span>{{ session.get('nombre') }}</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="{{ url_for('perfil') }}">Perfil</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a></li>
-            </ul>
-          </li>
-          
-          {# Carrito en navbar #}
-          <li class="nav-item">
-            <a class="nav-link position-relative" href="{{ url_for('checkout') }}" title="Carrito">
-              <!-- Icono carrito (SVG, sin librerías externas) -->
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-              fill="none" viewBox="0 0 24 24" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="me-1 text-gold">
-              <circle cx="9" cy="21" r="1"></circle>
-              <circle cx="20" cy="21" r="1"></circle>
-              <path d="M1 1h4l2.68 12.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61l1.38-7.39H6"></path>
-            </svg>
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2"
+            href="#" id="navbarDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
             
-            {# contador del carrito #}
-            {% set cart_count = (session.get('carrito')|length) if session.get('carrito') else 0 %}
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
-            style="font-size:.65rem;">
-            {{ cart_count }}
-          </span>
-        </a>
-      </li>
-      
-      
-      {% else %}
-      <li class="nav-item pe-1"><a class="nav-link" href="{{ url_for('login') }}">Acceder</a></li>
-      <li class="nav-item pe-1"><a class="nav-link" href="{{ url_for('registro') }}">Registro</a></li>
-      {% endif %}
-    </ul>
-  </div>
+            {# avatar desde sesión, con fallback local #}
+            {% set av = session.get('avatar') or 'img/avatars/default.webp' %}
+            <img
+            src="{% if av.startswith('http') %}{{ av }}{% else %}{{ url_for('static', filename=av if av.startswith('img/') else 'img/avatars/' ~ av) }}{% endif %}"
+            alt="avatar"
+            style="width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid #d4af37;">
+            <span>{{ session.get('nombre') }}</span>
+          </a>
+          
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{{ url_for('perfil') }}">Perfil</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a></li>
+          </ul>
+        </li>
+        
+        
+        {# Carrito en navbar #}
+        <li class="nav-item">
+          <a class="nav-link position-relative" href="{{ url_for('checkout') }}" title="Carrito">
+            <!-- Icono carrito (SVG, sin librerías externas) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="me-1 text-gold">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 12.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61l1.38-7.39H6"></path>
+          </svg>
+          
+          {# contador del carrito #}
+          {% set cart_count = (session.get('carrito')|length) if session.get('carrito') else 0 %}
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+          style="font-size:.65rem;">
+          {{ cart_count }}
+        </span>
+      </a>
+    </li>
+    
+    
+    {% else %}
+    <li class="nav-item pe-1"><a class="nav-link" href="{{ url_for('login') }}">Acceder</a></li>
+    <li class="nav-item pe-1"><a class="nav-link" href="{{ url_for('registro') }}">Registro</a></li>
+    {% endif %}
+  </ul>
+</div>
 </div>
 </nav>
 
