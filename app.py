@@ -293,28 +293,28 @@ import time as _t
 
 def upload_image_or_local(file_storage, folder="avatars"):
     """
-    Si hay CLOUDINARY_URL, sube a Cloudinary y devuelve (url, public_id).
-    Si no, guarda en /static/img/<folder>/ y devuelve (ruta_relativa, None).
+    Si hay CLOUDINARY_URL, intenta subir a Cloudinary y devuelve (url, public_id).
+    Si falla o no hay Cloudinary, guarda en /static/img/<folder>/ y devuelve (ruta_relativa, None).
     """
     if USE_CLOUDINARY:
-        r = cloudinary.uploader.upload(
-            file_storage,
-            folder=folder,
-            resource_type="image",
-            overwrite=False
-        )
-        return r.get("secure_url"), r.get("public_id")
+        try:
+            r = cloudinary.uploader.upload(
+                file_storage,
+                folder=folder,
+                resource_type="image",
+                overwrite=False
+            )
+            return r.get("secure_url"), r.get("public_id")
+        except Exception as e:
+            app.logger.exception(f"Cloudinary upload failed: {e}")  # <- queda en logs de Render
 
-    # Fallback local (como lo hacíamos)
+    # Fallback local
     ext = (file_storage.filename.rsplit(".", 1)[-1] or "").lower()
     safe_base = secure_filename(file_storage.filename.rsplit(".", 1)[0])[:36] or "avatar"
     fname = f"{int(_t.time())}_{safe_base}.{ext}"
-    
-    # AVATARS_DIR ya lo tenemos creado como static/img/avatars
+
     os.makedirs(AVATARS_DIR, exist_ok=True)
     file_storage.save(os.path.join(AVATARS_DIR, fname))
-   
-    # Devolvemos la ruta relativa que ya usamos en templates/ sesión
     return f"img/avatars/{fname}", None
 
 
@@ -1959,26 +1959,29 @@ def perfil_avatar():
         return redirect(url_for('login'))
     uid = session['usuario_id']
 
-    f = request.files.get("avatar")
-    if not f or not f.filename:
-        flash("No seleccionaste imagen.", "warning")
-        return redirect(url_for("perfil"))
+    try:
+        f = request.files.get("avatar")
+        if not f or not f.filename:
+            flash("No seleccionaste imagen.", "warning")
+            return redirect(url_for("perfil"))
 
-    ext = (f.filename.rsplit(".", 1)[-1] or "").lower()
-    if ext not in ALLOWED_EXT:
-        flash("Formato no permitido (usa png, jpg, jpeg, webp o gif).", "warning")
-        return redirect(url_for("perfil"))
+        ext = (f.filename.rsplit(".", 1)[-1] or "").lower()
+        if ext not in ALLOWED_EXT:
+            flash("Formato no permitido (usa png, jpg, jpeg, webp o gif).", "warning")
+            return redirect(url_for("perfil"))
 
-    # ---- SUBIR (Cloudinary si existe, si no local) ----
-    url_o_path, _pid = upload_image_or_local(f, folder="avatars")
+        # Subida (Cloudinary si hay, si no local)
+        url_o_path, _pid = upload_image_or_local(f, folder="avatars")
 
-    # Guardamos tal cual en la base de datos (puede ser URL completa o 'img/avatars/xxx')
-    q("UPDATE usuarios SET avatar=%s WHERE id=%s", url_o_path, uid, commit=True)
+        # Guardar en DB y en sesión (puede ser URL http o ruta relativa 'img/...')
+        q("UPDATE usuarios SET avatar=%s WHERE id=%s", url_o_path, uid, commit=True)
+        session["avatar"] = url_o_path
 
-    # En sesión guardamos lo mismo
-    session["avatar"] = url_o_path
+        flash("Avatar actualizado.", "success")
+    except Exception as e:
+        app.logger.exception(f"Error actualizando avatar: {e}")
+        flash("No se pudo actualizar el avatar (revisa los logs).", "danger")
 
-    flash("Avatar actualizado.", "success")
     return redirect(url_for("perfil"))
 
 

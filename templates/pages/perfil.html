@@ -247,7 +247,7 @@
             <h5 class="text-gold fw-bold mb-3">Mi avatar</h5>
             <div class="row g-3 align-items-center">
               <div class="col-sm-3 col-md-2 text-center">
-                {% set av = session['avatar'] or 'img/avatars/default.webp' %}
+                {% set av = session.get('avatar') or 'img/avatars/default.webp' %}
                 <img
                 src="{{ av if av.startswith('http') else url_for('static', filename=av) }}"
                 alt="Avatar"
@@ -278,6 +278,7 @@
     </div>
     
     <!-- ================= FAVORITOS ================= -->
+     
     <div class="tab-pane fade" id="tab-favoritos">
       {% if favoritos and favoritos|length %}
       <div class="panel-gold fav-outer">
