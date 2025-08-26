@@ -8,7 +8,7 @@
       <select name="cat" class="form-select">
         <option value="Todas" {{ 'selected' if (d_cat or 'Todas')=='Todas' else '' }}>Todas</option>
         {% for c in d_categorias %}
-          <option value="{{ c }}" {{ 'selected' if c==d_cat else '' }}>{{ c }}</option>
+        <option value="{{ c }}" {{ 'selected' if c==d_cat else '' }}>{{ c }}</option>
         {% endfor %}
       </select>
     </div>
@@ -43,7 +43,7 @@
         <td data-label="Nombre" class="fw-semibold">{{ p.nombre }}</td>
         <td class="d-none d-lg-table-cell">{{ p.descripcion }}</td>
         <td data-label="Precio" class="text-end">{{ '%.2f'|format(p.precio|float) }}</td>
-
+        
         <td data-label="Slot" style="min-width:130px;">
           <select class="form-select form-select-sm" data-pid="{{ p.id }}" onchange="adminDM.setSlot({{ combo.id }}, {{ p.id }}, this.value)">
             <option value="" {{ 'selected' if not slot_actual else '' }} disabled>Elegir…</option>
@@ -53,23 +53,23 @@
             <option value="postre"    {{ 'selected' if slot_actual=='postre'    else '' }}>Postre</option>
           </select>
         </td>
-
+        
         <td data-label="Acciones" class="text-center">
           <button class="btn btn-sm {{ 'btn-success' if slot_actual else 'btn-outline-secondary' }}"
-                  onclick="adminDM.setCurrent({{ combo.id }}, {{ p.id }})">
-            {{ 'Actualizar' if slot_actual else 'Añadir' }}
-          </button>
-          {% if slot_actual %}
-          <button class="btn btn-sm btn-outline-danger"
-                  onclick="adminDM.remove({{ combo.id }}, {{ p.id }})">
-            Quitar
-          </button>
-          {% endif %}
-        </td>
-      </tr>
-      {% else %}
-        <tr><td colspan="7" class="text-center text-secondary">Sin resultados.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+          onclick="adminDM.setCurrent({{ combo.id }}, {{ p.id }})">
+          {{ 'Actualizar' if slot_actual else 'Añadir' }}
+        </button>
+        {% if slot_actual %}
+        <button class="btn btn-sm btn-outline-danger"
+        onclick="adminDM.remove({{ combo.id }}, {{ p.id }})">
+        Quitar
+      </button>
+      {% endif %}
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="7" class="text-center text-secondary">Sin resultados.</td></tr>
+  {% endfor %}
+</tbody>
+</table>
 </div>

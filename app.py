@@ -17,6 +17,8 @@ from itsdangerous import URLSafeTimedSerializer
 from email.message import EmailMessage
 import psycopg2.extras
 
+import cloudinary
+import cloudinary.uploader
 import stripe
 
 from db import get_db_connection as get_connection  # tu helper DB
@@ -27,7 +29,18 @@ load_dotenv()
 app.secret_key = os.getenv('SECRET_KEY', '0yE2PYR4uqxebg1nUIC8gC1WEWPsbaHgR7UnCkjJ041D4zCBH_LG-2punJ0XlkYR')
 bcrypt = Bcrypt(app)
 
-#PAGOS STRIPE MODO PRUEBA
+
+# ---- Cloudinary (opcional; si no hay variable, seguimos en local) ----
+CLOUDINARY_URL = (os.getenv("CLOUDINARY_URL") or "").strip()
+USE_CLOUDINARY = bool(CLOUDINARY_URL)
+if USE_CLOUDINARY:
+    cloudinary.config(cloudinary_url=CLOUDINARY_URL, secure=True)
+
+
+
+
+
+# PAGOS STRIPE MODO PRUEBA
 
 stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_CURRENCY = os.getenv('STRIPE_CURRENCY', 'eur')
@@ -256,8 +269,6 @@ def _enviar_email_pagado_si_falta(pedido_id: int):
 
 
 
-
-
 def _ensure_stripe_support():
     try:
         q("ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS num_pedido VARCHAR(32);", commit=True)
@@ -273,6 +284,39 @@ def _ensure_stripe_support():
     except Exception: pass
 
 _ensure_stripe_support()
+
+
+# ───────── Helper para subir imágen cloudinary ─────────
+
+from werkzeug.utils import secure_filename
+import time as _t
+
+def upload_image_or_local(file_storage, folder="avatars"):
+    """
+    Si hay CLOUDINARY_URL, sube a Cloudinary y devuelve (url, public_id).
+    Si no, guarda en /static/img/<folder>/ y devuelve (ruta_relativa, None).
+    """
+    if USE_CLOUDINARY:
+        r = cloudinary.uploader.upload(
+            file_storage,
+            folder=folder,
+            resource_type="image",
+            overwrite=False
+        )
+        return r.get("secure_url"), r.get("public_id")
+
+    # Fallback local (como lo hacíamos)
+    ext = (file_storage.filename.rsplit(".", 1)[-1] or "").lower()
+    safe_base = secure_filename(file_storage.filename.rsplit(".", 1)[0])[:36] or "avatar"
+    fname = f"{int(_t.time())}_{safe_base}.{ext}"
+    
+    # AVATARS_DIR ya lo tenemos creado como static/img/avatars
+    os.makedirs(AVATARS_DIR, exist_ok=True)
+    file_storage.save(os.path.join(AVATARS_DIR, fname))
+   
+    # Devolvemos la ruta relativa que ya usamos en templates/ sesión
+    return f"img/avatars/{fname}", None
+
 
 
 
@@ -1098,6 +1142,7 @@ def registro():
         return redirect(url_for('login'))
     return render_template('pages/registro.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     err = None
@@ -1109,16 +1154,29 @@ def login():
         elif not u.get('activo', True):
             err = "Cuenta desactivada"
         else:
-            avatar = u.get('avatar')
-            if avatar and not avatar.startswith('img/'):
-                avatar = f"img/avatars/{avatar}"
+            avatar_db = (u.get('avatar') or '').strip()
+
+# Si viene URL completa (Cloudinary), la dejamos tal cual.
+# Si viene 'nombre.ext' o 'img/avatars/xxx', lo normalizamos a nuestro esquema antiguo.
+           
+            if avatar_db:
+                if avatar_db.startswith('http'):      # Cloudinary u otra CDN
+                    avatar_session = avatar_db
+                elif avatar_db.startswith('img/'):    # ya trae prefijo relativo
+                    avatar_session = avatar_db
+                else:                                 # solo nombre de archivo
+                    avatar_session = f"img/avatars/{avatar_db}"
+            else:
+                avatar_session = 'img/avatars/default.webp'
+
             session.update(
                 usuario_id=u['id'],
                 nombre=u['nombre'],
                 rol=u.get('rol', 'cliente'),
                 email=u['email'],
-                avatar=avatar or 'img/avatars/default.webp'
+                avatar=avatar_session
             )
+
             return redirect(url_for('index'))  # <-- solo si todo fue bien
 
     return render_template('pages/login.html', error=err)
@@ -1900,26 +1958,29 @@ def perfil_avatar():
     if not session.get('usuario_id'):
         return redirect(url_for('login'))
     uid = session['usuario_id']
+
     f = request.files.get("avatar")
     if not f or not f.filename:
         flash("No seleccionaste imagen.", "warning")
         return redirect(url_for("perfil"))
-    ext = (f.filename.rsplit(".",1)[-1] or "").lower()
+
+    ext = (f.filename.rsplit(".", 1)[-1] or "").lower()
     if ext not in ALLOWED_EXT:
         flash("Formato no permitido (usa png, jpg, jpeg, webp o gif).", "warning")
         return redirect(url_for("perfil"))
 
-    import time as _t
-    safe_base = secure_filename(f.filename.rsplit(".",1)[0])[:36] or "avatar"
-    fname = f"{uid}_{int(_t.time())}_{safe_base}.{ext}"
-    path  = os.path.join(AVATARS_DIR, fname)
-    f.save(path)
+    # ---- SUBIR (Cloudinary si existe, si no local) ----
+    url_o_path, _pid = upload_image_or_local(f, folder="avatars")
 
-    rel = f"img/avatars/{fname}"
-    q("UPDATE usuarios SET avatar=%s WHERE id=%s", rel, uid, commit=True)
-    session["avatar"] = rel  # para el navbar
+    # Guardamos tal cual en la base de datos (puede ser URL completa o 'img/avatars/xxx')
+    q("UPDATE usuarios SET avatar=%s WHERE id=%s", url_o_path, uid, commit=True)
+
+    # En sesión guardamos lo mismo
+    session["avatar"] = url_o_path
+
     flash("Avatar actualizado.", "success")
     return redirect(url_for("perfil"))
+
 
 # ──────────── FAVORITOS (NUEVO) ────────────
 @app.post("/favoritos/<int:pid>")

@@ -1539,6 +1539,7 @@ select.btn-add.select-seccion:active{ transform: translateY(0); box-shadow: 0 1p
 .hero-content h1 {
     background: linear-gradient(to right, #FFD700, #FFC107);
     -webkit-background-clip: text;
+     background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: bold;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
@@ -1560,12 +1561,14 @@ select.btn-add.select-seccion:active{ transform: translateY(0); box-shadow: 0 1p
 .cafe-icon-v2 {
     background: linear-gradient(to bottom, #6F4E37, #D2B48C); 
     -webkit-background-clip: text;
+     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .burger-icon-v2 {
     background: linear-gradient(to bottom, #DAA520 40%, #8B4513 60%, #4CAF50 80%, #FF0000 100%);
     -webkit-background-clip: text;
+     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
