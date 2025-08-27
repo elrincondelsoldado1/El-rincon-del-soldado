@@ -13,7 +13,7 @@
     display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box;
   }
   .actions-center form > * + *{ margin-top:8px; }
-
+  
   /* Tablas responsivas como “tarjetas” en móvil/tablet */
   .rtable thead th{ vertical-align: middle; }
   @media (max-width: 992px){
@@ -33,7 +33,7 @@
     .rtable .actions-center{ align-items:stretch; }
     .rtable tbody td.actions-cell[data-label]::before{ display:block; margin-bottom:.5rem; }
   }
-
+  
   /* Rol inline (select a la izda + Guardar a la dcha) */
   .role-inline{ display:inline-flex; align-items:center; gap:.5rem; flex-wrap:nowrap; }
   .role-inline .form-select{ width:auto; min-width:120px; }
@@ -41,13 +41,13 @@
   @media (max-width: 1400px){
     .rtable tbody td[data-label="Rol"]{ align-items:center; }
   }
-
+  
   /* ====== Estilos específicos de “Diseña tu menú” ====== */
   .dm-create .form-control{
     background:#151719; color:#eaeaea; border:1px solid rgba(212,175,55,.35);
   }
   .dm-create .form-control::placeholder{ color:#a7a7a7; }
-
+  
   .btn-military{ border:1px solid #d4af37; color:#d4af37; background:transparent; }
   .btn-military:hover{ background:rgba(212,175,55,.1); color:#fff; }
   .btn-create{
@@ -55,14 +55,14 @@
     padding:.35rem .85rem; font-size:.92rem; font-weight:600;
   }
   .btn-create:hover{ filter:brightness(.95); }
-
+  
   .actions-inline{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:center; }
   .dm-btn-row{ display:flex; gap:10px; justify-content:center; align-items:center; width:100%; }
   .actions-center .btn,
   .actions-center input[type="text"],
   .actions-center input[type="number"]{ height:34px; font-size:.9rem; border-radius:.4rem; box-sizing:border-box; }
   @media (min-width: 992px){ .actions-center form.d-flex{ justify-content:center; } }
-
+  
   /* Modal “Gestionar productos” */
   #productosModal .modal-title{ color:#d4af37; }
   #dm-body form{
@@ -77,7 +77,7 @@
   #dm-body .table thead th{ color:#d4af37; }
   .btn-manage{ border:1px solid #d4af37; color:#d4af37; background:transparent; }
   .btn-manage:hover{ background:rgba(212,175,55,.1); color:#ffffff; }
-
+  
   /* Focus dorado */
   .form-control:focus,
   .form-select:focus{
@@ -85,7 +85,7 @@
     box-shadow:0 0 0 .2rem rgba(212,175,55,.25) !important;
     outline:0;
   }
-
+  
   /* Email: envuelve y NO ensancha la tabla */
   .rtable td[data-label="Email"]{
     width: 220px; max-width: 220px; white-space: normal;
@@ -95,12 +95,12 @@
   @media (min-width: 1200px){
     .rtable td[data-label="Email"]{ font-size: .95rem; }
   }
-
+  
   .form-select option:checked{
     background:#2a2a2a linear-gradient(0deg, #2a2a2a 0%, #2a2a2a 100%);
     color:#eaeaea;
   }
-
+  
   /* Centrado del botón Gestionar productos */
   .actions-center a.btn-manage{
     display:block !important;
@@ -112,7 +112,7 @@
     line-height:1.15 !important;
     text-align:center !important;
   }
-
+  
   /* ====== Pestañas doradas coherentes con la web ====== */
   .tabs-gold .nav { gap:.4rem; flex-wrap:wrap; }
   .tabs-gold .nav-item { margin-right:.35rem; }
@@ -142,7 +142,7 @@
   }
   /* versión compacta si la quisieras: .tabs-gold.tabs-compact */
   .tabs-gold.tabs-compact .nav-link{ padding:.45rem .9rem; border-radius:12px; font-size:.95rem; }
-
+  
   /* Botones de navegación */
   .nav-link {
     color: #fff;
@@ -150,19 +150,19 @@
     border-radius: 12px;
     transition: all 0.3s ease;
   }
-
+  
   .nav-link:hover {
     background: rgba(255, 215, 0, 0.2);
     color: #FFD700;
   }
-
+  
   .nav-link.active {
     background: linear-gradient(145deg, #d4af37, #b8860b);
     color: #2b1e0f !important;
     font-weight: bold;
     box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
   }
-
+  
   /* Botón dorado suave */
   .btn-primary {
     background: linear-gradient(145deg, #d4af37, #b8860b);
@@ -173,20 +173,20 @@
     padding: 8px 18px;
     transition: all 0.3s ease;
   }
-
+  
   .btn-primary:hover {
     background: linear-gradient(145deg, #e5c158, #c7931a);
     color: #fff;
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
   }
-
+  
   .btn-primary:active {
     background: #b8860b;
     transform: scale(0.98);
   }
-
+  
   .btn-compact{ padding:.28rem .6rem; font-size:.86rem; line-height:1.1; border-radius:.4rem; }
-
+  
   /* Encabezados dorados en todas las tablas del panel (como Perfil) */
   .table.table-dark thead.thead-gold th,
   .table.table-dark thead.thead-gold td{
@@ -201,10 +201,10 @@
   <div class="d-flex align-items-center justify-content-between mb-3">
     <h1 class="text-gold fw-bold m-0">Panel de Administración</h1>
     {% if seccion == 'carta' %}
-      <a href="{{ url_for('admin_producto_nuevo') }}" class="btn btn-military btn-lg">Añadir producto</a>
+    <a href="{{ url_for('admin_producto_nuevo') }}" class="btn btn-military btn-lg">Añadir producto</a>
     {% endif %}
   </div>
-
+  
   {# ===== Pestañas con recuadro dorado ===== #}
   <div class="tabs-gold mb-3">
     <ul class="nav nav-pills">
@@ -216,7 +216,7 @@
       <li class="nav-item"><a class="nav-link {{ 'active' if seccion=='disena' }}" href="{{ url_for('admin_index', seccion='disena') }}">Diseña tu menú</a></li>
     </ul>
   </div>
-
+  
   {# ===================== CARTA ===================== #}
   {% if seccion == 'carta' %}
   <div class="panel-wrap">
@@ -229,7 +229,7 @@
         <select name="cat" class="form-select">
           <option value="Todas" {{ 'selected' if (cat or 'Todas')=='Todas' else '' }}>Todas las categorías</option>
           {% for c in categorias %}
-            <option value="{{ c }}" {{ 'selected' if c==cat else '' }}>{{ c }}</option>
+          <option value="{{ c }}" {{ 'selected' if c==cat else '' }}>{{ c }}</option>
           {% endfor %}
         </select>
       </div>
@@ -237,7 +237,7 @@
         <button class="btn btn-primary">Filtrar</button>
       </div>
     </form>
-
+    
     <div class="table-responsive">
       <table class="table table-dark table-hover align-middle rtable">
         <thead class="thead-gold">
@@ -257,19 +257,19 @@
             <td data-label="Nombre" class="fw-semibold">{{ p.nombre }}</td>
             <td class="d-none d-lg-table-cell">{{ p.descripcion }}</td>
             <td data-label="Precio" class="text-end">{{ '%.2f'|format(p.precio|float) }}</td>
-
+            
             <td data-label="Visible">
               <form method="post" action="{{ url_for('admin_producto_toggle_visible', pid=p.id) }}">
                 <button class="btn btn-sm {{ 'btn-success' if p.visible else 'btn-outline-secondary' }}">{{ 'Sí' if p.visible else 'No' }}</button>
               </form>
             </td>
-
+            
             <td data-label="Agotado">
               <form method="post" action="{{ url_for('admin_producto_toggle_agotado', pid=p.id) }}">
                 <button class="btn btn-sm {{ 'btn-danger' if p.agotado else 'btn-outline-success' }}">{{ 'Agotado' if p.agotado else 'OK' }}</button>
               </form>
             </td>
-
+            
             <td data-label="Acciones" class="actions-cell text-center">
               <div class="actions-center">
                 <a class="btn btn-sm btn-outline-warning" href="{{ url_for('admin_producto_editar', pid=p.id) }}">Editar</a>
@@ -285,7 +285,7 @@
     </div>
   </div>
   {% endif %}
-
+  
   {# ===================== USUARIOS ===================== #}
   {% if seccion == 'usuarios' %}
   <div class="panel-wrap">
@@ -303,7 +303,7 @@
             <td data-label="#">{{ u.id }}</td>
             <td data-label="Nombre" class="fw-semibold">{{ u.nombre }}</td>
             <td data-label="Email">{{ u.email }}</td>
-
+            
             <td data-label="Rol">
               <form class="role-inline" method="post" action="{{ url_for('admin_usuario_cambiar_rol', uid=u.id) }}">
                 <select name="rol" class="form-select form-select-sm">
@@ -313,11 +313,11 @@
                 <button class="btn btn-sm btn-primary">Guardar</button>
               </form>
             </td>
-
+            
             <td data-label="Activo">
               <span class="badge {{ 'bg-success' if u.activo else 'bg-secondary' }}">{{ 'Sí' if u.activo else 'No' }}</span>
             </td>
-
+            
             <td data-label="Acciones" class="actions-cell text-center">
               <div class="actions-center">
                 <form method="post" action="{{ url_for('admin_usuario_toggle', uid=u.id) }}">
@@ -326,429 +326,437 @@
                   </button>
                 </form>
                 <form method="post" action="{{ url_for('admin_usuario_eliminar', uid=u.id) }}"
-                      onsubmit="return confirm('¿Eliminar usuario {{ u.email }}?');">
-                  <button class="btn btn-sm btn-outline-danger">Eliminar</button>
-                </form>
-              </div>
-            </td>
-
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+                onsubmit="return confirm('¿Eliminar usuario {{ u.email }}?');">
+                <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+              </form>
+            </div>
+          </td>
+          
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
-  {% endif %}
+</div>
+{% endif %}
 
-  {# ===================== RESERVAS ===================== #}
-  {% if seccion == 'reservas' %}
-    {% if reservas and reservas|length %}
-    <div class="panel-wrap">
-      <div class="table-responsive">
-        <table class="table table-dark table-hover align-middle rtable">
-          <thead class="thead-gold">
-            <tr>
-              <th>#</th><th>Nombre</th><th>Teléfono</th><th>Email</th>
-              <th>Fecha</th><th>Hora</th><th>Pers.</th>
-              <th>Tipo</th><th>Comentarios</th><th>Mesa</th><th>Estado</th>
-              <th class="text-center">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for r in reservas %}
-            <tr>
-              <td data-label="#">{{ r.id }}</td>
-              <td data-label="Nombre" class="fw-semibold">{{ r.nombre }}</td>
-              <td data-label="Teléfono">{{ r.telefono }}</td>
-              <td data-label="Email">{{ r.email or '—' }}</td>
-              <td data-label="Fecha">{{ r.fecha }}</td>
-              <td data-label="Hora">{{ r.hora }}</td>
-              <td data-label="Pers.">{{ r.personas }}</td>
-              <td data-label="Tipo">{{ r.tipo or '—' }}</td>
-              <td data-label="Comentarios">{{ r.comentarios or '—' }}</td>
-              <td data-label="Mesa">
-                {% if r.mesa_id %}
-                  {{ r.mesa_nombre or ('Mesa ' ~ r.mesa_id) }}
-                  {% if r.mesa_capacidad %}<small class="text-muted">({{ r.mesa_capacidad }})</small>{% endif %}
-                {% else %} — {% endif %}
-              </td>
-              <td data-label="Estado">
-                <span class="badge
+{# ===================== RESERVAS ===================== #}
+{% if seccion == 'reservas' %}
+{% if reservas and reservas|length %}
+<div class="panel-wrap">
+  <div class="table-responsive">
+    <table class="table table-dark table-hover align-middle rtable">
+      <thead class="thead-gold">
+        <tr>
+          <th>#</th><th>Nombre</th><th>Teléfono</th><th>Email</th>
+          <th>Fecha</th><th>Hora</th><th>Pers.</th>
+          <th>Tipo</th><th>Comentarios</th><th>Mesa</th><th>Estado</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in reservas %}
+        <tr>
+          <td data-label="#">{{ r.id }}</td>
+          <td data-label="Nombre" class="fw-semibold">{{ r.nombre }}</td>
+          <td data-label="Teléfono">{{ r.telefono }}</td>
+          <td data-label="Email">{{ r.email or '—' }}</td>
+          <td data-label="Fecha">{{ r.fecha }}</td>
+          <td data-label="Hora">{{ r.hora }}</td>
+          <td data-label="Pers.">{{ r.personas }}</td>
+          <td data-label="Tipo">{{ r.tipo or '—' }}</td>
+          <td data-label="Comentarios">{{ r.comentarios or '—' }}</td>
+          <td data-label="Mesa">
+            {% if r.mesa_id %}
+            {{ r.mesa_nombre or ('Mesa ' ~ r.mesa_id) }}
+            {% if r.mesa_capacidad %}<small class="text-muted">({{ r.mesa_capacidad }})</small>{% endif %}
+            {% else %} — {% endif %}
+          </td>
+          <td data-label="Estado">
+            <span class="badge
                   {% if r.estado=='confirmada' %} bg-success
                   {% elif r.estado=='pendiente' %} bg-warning text-dark
                   {% elif r.estado=='cancelada' %} bg-secondary
                   {% else %} bg-light text-dark {% endif %}">
-                  {{ r.estado or '—' }}
-                </span>
-              </td>
-              <td data-label="Acciones" class="actions-cell">
-                <div class="actions-center">
-                  <form method="post" action="{{ url_for('admin_reserva_confirmar', rid=r.id) }}">
-                    <button class="btn btn-sm btn-outline-warning">Confirmar</button>
-                  </form>
-                  <form method="post" action="{{ url_for('admin_reserva_cancelar', rid=r.id) }}"
-                        onsubmit="return confirm('¿Cancelar la reserva #{{ r.id }}?')">
-                    <button class="btn btn-sm btn-outline-danger">Cancelar</button>
-                  </form>
-                  <form method="post" action="{{ url_for('admin_reserva_responder', rid=r.id) }}">
-                    <input type="hidden" name="asunto" value="Sobre tu reserva #{{ r.id }}">
-                    <input type="text" name="mensaje" placeholder="Responder…" class="form-control form-control-sm">
-                    <button class="btn btn-sm btn-secondary">Enviar</button>
-                  </form>
+            {{ r.estado or '—' }}
+          </span>
+        </td>
+        <td data-label="Acciones" class="actions-cell">
+          <div class="actions-center">
+            <form method="post" action="{{ url_for('admin_reserva_confirmar', rid=r.id) }}">
+              <button class="btn btn-sm btn-outline-warning">Confirmar</button>
+            </form>
+            <form method="post" action="{{ url_for('admin_reserva_cancelar', rid=r.id) }}"
+            onsubmit="return confirm('¿Cancelar la reserva #{{ r.id }}?')">
+            <button class="btn btn-sm btn-outline-danger">Cancelar</button>
+          </form>
+          <form method="post" action="{{ url_for('admin_reserva_responder', rid=r.id) }}">
+            <input type="hidden" name="asunto" value="Sobre tu reserva #{{ r.id }}">
+            <input type="text" name="mensaje" placeholder="Responder…" class="form-control form-control-sm">
+            <button class="btn btn-sm btn-secondary">Enviar</button>
+          </form>
+          
+          <form method="post" action="{{ url_for('admin_reserva_eliminar', rid=r.id) }}"
+          onsubmit="return confirm('¿Eliminar la reserva #{{ r.id }}? Esta acción no se puede deshacer.');">
+          <button class="btn btn-sm btn-outline-danger btn-compact">Eliminar</button>
+        </form>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+{% else %}
+<div class="text-center text-secondary py-5">No hay reservas registradas.</div>
+{% endif %}
+{% endif %}
 
-                  <form method="post" action="{{ url_for('admin_reserva_eliminar', rid=r.id) }}"
-                        onsubmit="return confirm('¿Eliminar la reserva #{{ r.id }}? Esta acción no se puede deshacer.');">
-                    <button class="btn btn-sm btn-outline-danger btn-compact">Eliminar</button>
-                  </form>
-                </div>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+{# ===================== CONTACTO ===================== #}
+{% if seccion == 'contacto' %}
+{% if contactos and contactos|length %}
+<div class="panel-wrap">
+  <div class="table-responsive">
+    <table class="table table-dark table-hover align-middle rtable">
+      <thead class="thead-gold">
+        <tr>
+          <th>#</th><th>Nombre</th><th>Email</th><th>Teléfono</th>
+          <th>Asunto</th><th>Mensaje</th><th>Imagen</th>
+          <th>Estado</th><th>Respuesta</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in contactos %}
+        <tr>
+          <td data-label="#">{{ c.id }}</td>
+          <td data-label="Nombre" class="fw-semibold">{{ c.nombre }}</td>
+          <td data-label="Email">{{ c.email or '—' }}</td>
+          <td data-label="Teléfono">{{ c.telefono or '—' }}</td>
+          <td data-label="Asunto">{{ c.asunto or '—' }}</td>
+          <td data-label="Mensaje">{{ c.mensaje }}</td>
+          <td data-label="Imagen">
+            {% set path = c.imagen or '' %}
+            {% if path %}
+            {% if path.startswith('http') %}
+            <a href="{{ path }}" target="_blank" class="link-light">Ver</a>
+            {% else %}
+            <a href="{{ url_for('static', filename=path.lstrip('/')) }}" target="_blank" class="link-light">Ver</a>
+            {% endif %}
+            {% else %}
+            —
+            {% endif %}
+          </td>
+          
+          <td data-label="Estado">
+            <span class="badge {{ 'bg-success' if c.admin_estado=='respondido' else 'bg-secondary' }}">{{ c.admin_estado or 'pendiente' }}</span>
+          </td>
+          <td data-label="Respuesta">{{ c.admin_respuesta or '—' }}</td>
+          
+          <td data-label="Acciones" class="actions-cell text-center">
+            <div class="actions-center">
+              <form method="post" action="{{ url_for('admin_contacto_publicar', cid=c.id) }}">
+                <input type="text" name="respuesta" placeholder="Escribir respuesta…" class="form-control form-control-sm">
+                <button class="btn btn-sm btn-outline-warning">Publicar</button>
+              </form>
+              <form method="post" action="{{ url_for('admin_contacto_email', cid=c.id) }}">
+                <input type="hidden" name="asunto" value="Respuesta a tu mensaje">
+                <input type="text" name="respuesta" placeholder="Enviar por email…" class="form-control form-control-sm">
+                <button class="btn btn-sm btn-secondary">Enviar</button>
+              </form>
+              <form method="post" action="{{ url_for('admin_contacto_eliminar', cid=c.id) }}"
+              onsubmit="return confirm('¿Eliminar mensaje #{{ c.id }}?')">
+              <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+            </form>
+          </div>
+        </td>
+        
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+{% else %}
+<div class="text-center text-secondary py-5">No hay mensajes de contacto.</div>
+{% endif %}
+{% endif %}
+
+{# ===================== DISEÑA TU MENÚ ===================== #}
+{% if seccion == 'disena' %}
+<div class="panel-wrap">
+  
+  <h3 class="text-gold fw-bold mb-2">Menús (combos)</h3>
+  
+  <!-- Fila de creación -->
+  <form class="row g-2 mb-3 dm-create" method="post" action="{{ url_for('admin_combo_crear') }}">
+    <div class="col-md-3">
+      <input class="form-control" name="nombre" placeholder="Nombre (Menú del Día)" required>
+    </div>
+    <div class="col-md-2">
+      <input class="form-control" type="number" name="precio_base" step="0.01" placeholder="Precio base">
+    </div>
+    <div class="col-md-7">
+      <div class="row g-2">
+        <div class="col-md-3"><input class="form-control" name="entrante_cats"  placeholder="Entrantes"></div>
+        <div class="col-md-3"><input class="form-control" name="principal_cats" placeholder="Principales"></div>
+        <div class="col-md-3"><input class="form-control" name="bebida_cats"    placeholder="Bebidas"></div>
+        <div class="col-md-3"><input class="form-control" name="postre_cats"    placeholder="Postres"></div>
       </div>
     </div>
-    {% else %}
-      <div class="text-center text-secondary py-5">No hay reservas registradas.</div>
-    {% endif %}
-  {% endif %}
-
-  {# ===================== CONTACTO ===================== #}
-  {% if seccion == 'contacto' %}
-    {% if contactos and contactos|length %}
-    <div class="panel-wrap">
-      <div class="table-responsive">
-        <table class="table table-dark table-hover align-middle rtable">
-          <thead class="thead-gold">
-            <tr>
-              <th>#</th><th>Nombre</th><th>Email</th><th>Teléfono</th>
-              <th>Asunto</th><th>Mensaje</th><th>Imagen</th>
-              <th>Estado</th><th>Respuesta</th>
-              <th class="text-center">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for c in contactos %}
-            <tr>
-              <td data-label="#">{{ c.id }}</td>
-              <td data-label="Nombre" class="fw-semibold">{{ c.nombre }}</td>
-              <td data-label="Email">{{ c.email or '—' }}</td>
-              <td data-label="Teléfono">{{ c.telefono or '—' }}</td>
-              <td data-label="Asunto">{{ c.asunto or '—' }}</td>
-              <td data-label="Mensaje">{{ c.mensaje }}</td>
-              <td data-label="Imagen">
-                {% if c.imagen %}
-                  <a href="{{ url_for('static', filename=c.imagen) }}" target="_blank" class="link-light">Ver</a>
-                {% else %} — {% endif %}
-              </td>
-              <td data-label="Estado">
-                <span class="badge {{ 'bg-success' if c.admin_estado=='respondido' else 'bg-secondary' }}">{{ c.admin_estado or 'pendiente' }}</span>
-              </td>
-              <td data-label="Respuesta">{{ c.admin_respuesta or '—' }}</td>
-
-              <td data-label="Acciones" class="actions-cell text-center">
-                <div class="actions-center">
-                  <form method="post" action="{{ url_for('admin_contacto_publicar', cid=c.id) }}">
-                    <input type="text" name="respuesta" placeholder="Escribir respuesta…" class="form-control form-control-sm">
-                    <button class="btn btn-sm btn-outline-warning">Publicar</button>
-                  </form>
-                  <form method="post" action="{{ url_for('admin_contacto_email', cid=c.id) }}">
-                    <input type="hidden" name="asunto" value="Respuesta a tu mensaje">
-                    <input type="text" name="respuesta" placeholder="Enviar por email…" class="form-control form-control-sm">
-                    <button class="btn btn-sm btn-secondary">Enviar</button>
-                  </form>
-                  <form method="post" action="{{ url_for('admin_contacto_eliminar', cid=c.id) }}"
-                        onsubmit="return confirm('¿Eliminar mensaje #{{ c.id }}?')">
-                    <button class="btn btn-sm btn-outline-danger">Eliminar</button>
-                  </form>
-                </div>
-              </td>
-
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+    <div class="col-12 col-md-2 mt-2 d-grid">
+      <button class="btn btn-military btn-create">Crear</button>
     </div>
-    {% else %}
-      <div class="text-center text-secondary py-5">No hay mensajes de contacto.</div>
-    {% endif %}
-  {% endif %}
-
-  {# ===================== DISEÑA TU MENÚ ===================== #}
-  {% if seccion == 'disena' %}
-  <div class="panel-wrap">
-
-    <h3 class="text-gold fw-bold mb-2">Menús (combos)</h3>
-
-    <!-- Fila de creación -->
-    <form class="row g-2 mb-3 dm-create" method="post" action="{{ url_for('admin_combo_crear') }}">
-      <div class="col-md-3">
-        <input class="form-control" name="nombre" placeholder="Nombre (Menú del Día)" required>
-      </div>
-      <div class="col-md-2">
-        <input class="form-control" type="number" name="precio_base" step="0.01" placeholder="Precio base">
-      </div>
-      <div class="col-md-7">
-        <div class="row g-2">
-          <div class="col-md-3"><input class="form-control" name="entrante_cats"  placeholder="Entrantes"></div>
-          <div class="col-md-3"><input class="form-control" name="principal_cats" placeholder="Principales"></div>
-          <div class="col-md-3"><input class="form-control" name="bebida_cats"    placeholder="Bebidas"></div>
-          <div class="col-md-3"><input class="form-control" name="postre_cats"    placeholder="Postres"></div>
+  </form>
+  
+  <div class="table-responsive mb-4">
+    <table class="table table-dark table-hover align-middle rtable">
+      <thead class="thead-gold">
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Precio base</th>
+          <th>Entrante</th>
+          <th>Principal</th>
+          <th>Bebida</th>
+          <th>Postre</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in d_combos %}
+        <tr>
+          <td data-label="#">{{ c.id }}</td>
+          <td data-label="Nombre">{{ c.nombre }}</td>
+          <td data-label="Precio base">{{ '%.2f'|format(c.precio_base|float) }} €</td>
+          <td><small>{{ c.entrante_cats|join(', ') if c.entrante_cats else '—' }}</small></td>
+          <td><small>{{ c.principal_cats|join(', ') if c.principal_cats else '—' }}</small></td>
+          <td><small>{{ c.bebida_cats|join(', ') if c.bebida_cats else '—' }}</small></td>
+          <td><small>{{ c.postre_cats|join(', ') if c.postre_cats else '—' }}</small></td>
+          
+          <td class="actions-cell text-center">
+            <div class="actions-center">
+              
+              <!-- Form edición -->
+              <form id="comboForm{{ c.id }}"
+              method="post"
+              action="{{ url_for('admin_combo_actualizar', cid=c.id) }}"
+              class="d-flex flex-column flex-lg-row gap-2 w-100 justify-content-center">
+              <input class="form-control form-control-sm dm-input" name="nombre"        value="{{ c.nombre }}">
+              <input class="form-control form-control-sm dm-input" name="precio_base"   type="number" step="0.01" value="{{ '%.2f'|format(c.precio_base|float) }}">
+              <input class="form-control form-control-sm dm-input" name="entrante_cats"  value="{{ c.entrante_cats|join(', ') if c.entrante_cats else '' }}"  placeholder="Entrantes">
+              <input class="form-control form-control-sm dm-input" name="principal_cats" value="{{ c.principal_cats|join(', ') if c.principal_cats else '' }}" placeholder="Principales">
+              <input class="form-control form-control-sm dm-input" name="bebida_cats"    value="{{ c.bebida_cats|join(', ') if c.bebida_cats else '' }}"    placeholder="Bebidas">
+              <input class="form-control form-control-sm dm-input" name="postre_cats"    value="{{ c.postre_cats|join(', ') if c.postre_cats else '' }}"    placeholder="Postres">
+              <button type="submit" class="d-none">Guardar</button>
+            </form>
+            
+            <!-- Botones Guardar + Eliminar -->
+            <div class="dm-btn-row">
+              <button type="button"
+              class="btn btn-sm btn-outline-warning"
+              onclick="document.getElementById('comboForm{{ c.id }}').requestSubmit()">
+              Guardar
+            </button>
+            
+            <form method="post"
+            action="{{ url_for('admin_combo_eliminar', cid=c.id) }}"
+            class="d-inline"
+            onsubmit="return confirm('¿Eliminar el menú {{ c.nombre }}?');">
+            <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+          </form>
         </div>
-      </div>
-      <div class="col-12 col-md-2 mt-2 d-grid">
-        <button class="btn btn-military btn-create">Crear</button>
-      </div>
-    </form>
-
-    <div class="table-responsive mb-4">
-      <table class="table table-dark table-hover align-middle rtable">
-        <thead class="thead-gold">
-          <tr>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Precio base</th>
-            <th>Entrante</th>
-            <th>Principal</th>
-            <th>Bebida</th>
-            <th>Postre</th>
-            <th class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for c in d_combos %}
-          <tr>
-            <td data-label="#">{{ c.id }}</td>
-            <td data-label="Nombre">{{ c.nombre }}</td>
-            <td data-label="Precio base">{{ '%.2f'|format(c.precio_base|float) }} €</td>
-            <td><small>{{ c.entrante_cats|join(', ') if c.entrante_cats else '—' }}</small></td>
-            <td><small>{{ c.principal_cats|join(', ') if c.principal_cats else '—' }}</small></td>
-            <td><small>{{ c.bebida_cats|join(', ') if c.bebida_cats else '—' }}</small></td>
-            <td><small>{{ c.postre_cats|join(', ') if c.postre_cats else '—' }}</small></td>
-
-            <td class="actions-cell text-center">
-              <div class="actions-center">
-
-                <!-- Form edición -->
-                <form id="comboForm{{ c.id }}"
-                      method="post"
-                      action="{{ url_for('admin_combo_actualizar', cid=c.id) }}"
-                      class="d-flex flex-column flex-lg-row gap-2 w-100 justify-content-center">
-                  <input class="form-control form-control-sm dm-input" name="nombre"        value="{{ c.nombre }}">
-                  <input class="form-control form-control-sm dm-input" name="precio_base"   type="number" step="0.01" value="{{ '%.2f'|format(c.precio_base|float) }}">
-                  <input class="form-control form-control-sm dm-input" name="entrante_cats"  value="{{ c.entrante_cats|join(', ') if c.entrante_cats else '' }}"  placeholder="Entrantes">
-                  <input class="form-control form-control-sm dm-input" name="principal_cats" value="{{ c.principal_cats|join(', ') if c.principal_cats else '' }}" placeholder="Principales">
-                  <input class="form-control form-control-sm dm-input" name="bebida_cats"    value="{{ c.bebida_cats|join(', ') if c.bebida_cats else '' }}"    placeholder="Bebidas">
-                  <input class="form-control form-control-sm dm-input" name="postre_cats"    value="{{ c.postre_cats|join(', ') if c.postre_cats else '' }}"    placeholder="Postres">
-                  <button type="submit" class="d-none">Guardar</button>
-                </form>
-
-                <!-- Botones Guardar + Eliminar -->
-                <div class="dm-btn-row">
-                  <button type="button"
-                          class="btn btn-sm btn-outline-warning"
-                          onclick="document.getElementById('comboForm{{ c.id }}').requestSubmit()">
-                    Guardar
-                  </button>
-
-                  <form method="post"
-                        action="{{ url_for('admin_combo_eliminar', cid=c.id) }}"
-                        class="d-inline"
-                        onsubmit="return confirm('¿Eliminar el menú {{ c.nombre }}?');">
-                    <button class="btn btn-sm btn-outline-danger">Eliminar</button>
-                  </form>
-                </div>
-
-                <!-- Botón Gestionar productos -->
-                <a  class="btn btn-sm btn-military btn-manage"
-                    href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#productosModal"
-                    data-cid="{{ c.id }}"
-                    data-nombre="{{ c.nombre }}">
-                  Gestionar productos
-                </a>
-
-              </div>
-            </td>
-          </tr>
-          {% else %}
-            <tr><td colspan="8" class="text-center text-secondary">No hay menús.</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        
+        <!-- Botón Gestionar productos -->
+        <a  class="btn btn-sm btn-military btn-manage"
+        href="#"
+        data-bs-toggle="modal"
+        data-bs-target="#productosModal"
+        data-cid="{{ c.id }}"
+        data-nombre="{{ c.nombre }}">
+        Gestionar productos
+      </a>
+      
     </div>
+  </td>
+</tr>
+{% else %}
+<tr><td colspan="8" class="text-center text-secondary">No hay menús.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
 
-    <!-- ================= Modal Gestionar productos ================ -->
-    <div class="modal fade" id="productosModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-xl modal-dialog-scrollable">
-        <div class="modal-content bg-dark text-light">
-          <div class="modal-header">
-            <h5 class="modal-title">Gestionar productos — <span id="dm-titulo"></span></h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-          </div>
-          <div class="modal-body p-0" id="dm-body">
-            <div class="p-4 text-center text-secondary">Cargando…</div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
+<!-- ================= Modal Gestionar productos ================ -->
+<div class="modal fade" id="productosModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title">Gestionar productos — <span id="dm-titulo"></span></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body p-0" id="dm-body">
+        <div class="p-4 text-center text-secondary">Cargando…</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
-
-    <script>
-    const adminDM = {
-      cid: null,
-      pendingSlot: {},
-
-      open(evt){
-        const btn = evt.relatedTarget;
-        this.cid = btn.getAttribute('data-cid');
-        document.getElementById('dm-titulo').textContent = btn.getAttribute('data-nombre');
-        this.load();
-      },
-
-      qs(){
-        const url = new URL(location.origin + `/admin/combos/${this.cid}/productos`);
-        const f = document.querySelector('#dm-body form');
-        if (f) {
-          const data = new FormData(f);
-          for (const [k, v] of data.entries()) {
-            if (k !== 'cid') url.searchParams.set(k, v);
-          }
-        }
-        return url;
-      },
-
-      load(){
-        fetch(this.qs())
-          .then(r => r.text())
-          .then(html => { document.getElementById('dm-body').innerHTML = html; })
-          .catch(() => { document.getElementById('dm-body').innerHTML = '<div class="p-4 text-danger">Error cargando</div>'; });
-      },
-
-      reload(e){ if (e) e.preventDefault(); this.load(); return false; },
-
-      setSlot(cid, pid, slot){ this.pendingSlot[pid] = slot; },
-
-      setCurrent(cid, pid){
-        const slot = this.pendingSlot[pid];
-        if (!slot) { alert('Elige un slot (Entrante/Principal/Bebida/Postre)'); return; }
-        const fd = new FormData(); fd.append('slot', slot);
-        fetch(`/admin/combos/${cid}/producto/${pid}/set`, { method:'POST', body:fd })
-          .then(() => this.load())
-          .catch(() => alert('Error al guardar'));
-      },
-
-      remove(cid, pid){
-        fetch(`/admin/combos/${cid}/producto/${pid}/remove`, { method:'POST' })
-          .then(() => this.load())
-          .catch(() => alert('Error al quitar'));
-      }
-    };
-
-    document.getElementById('productosModal')
-      ?.addEventListener('show.bs.modal', e => adminDM.open(e));
-    </script>
   </div>
-  {% endif %}
+</div>
 
-  {# ===================== PEDIDOS ===================== #}
-  {% if seccion == 'pedidos' %}
-  <div class="panel-wrap">
-    {% if pedidos and pedidos|length %}
-    <div class="table-responsive">
-      <table class="table table-dark table-hover align-middle rtable">
-        <thead class="thead-gold">
-          <tr>
-            <th>Id</th>                {# ID interno #}
-            <th>Nº pedido</th>        {# RDS-000123 #}
-            <th>Fecha</th>
-            <th>Cliente</th>
-            <th>Email</th>
-            <th class="text-end">Total (€)</th>
-            <th>Estado</th>
-            <th class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for o in pedidos %}
-          <tr>
-            <td data-label="#">{{ o.id }}</td>
-            <td data-label="Nº pedido">{{ o.num_pedido or ('RDS-' ~ o.id) }}</td>
-            <td data-label="Fecha">{{ o.fecha }}</td>
-            <td data-label="Cliente">{{ o.usuario_nombre or '—' }}</td>
-            <td data-label="Email">{{ o.usuario_email or '—' }}</td>
-            <td data-label="Total" class="text-end">{{ '%.2f'|format(o.total|float) }}</td>
-            <td data-label="Estado">
-              <span class="badge
+<script>
+  const adminDM = {
+    cid: null,
+    pendingSlot: {},
+    
+    open(evt){
+      const btn = evt.relatedTarget;
+      this.cid = btn.getAttribute('data-cid');
+      document.getElementById('dm-titulo').textContent = btn.getAttribute('data-nombre');
+      this.load();
+    },
+    
+    qs(){
+      const url = new URL(location.origin + `/admin/combos/${this.cid}/productos`);
+      const f = document.querySelector('#dm-body form');
+      if (f) {
+        const data = new FormData(f);
+        for (const [k, v] of data.entries()) {
+          if (k !== 'cid') url.searchParams.set(k, v);
+        }
+      }
+      return url;
+    },
+    
+    load(){
+      fetch(this.qs())
+      .then(r => r.text())
+      .then(html => { document.getElementById('dm-body').innerHTML = html; })
+      .catch(() => { document.getElementById('dm-body').innerHTML = '<div class="p-4 text-danger">Error cargando</div>'; });
+    },
+    
+    reload(e){ if (e) e.preventDefault(); this.load(); return false; },
+    
+    setSlot(cid, pid, slot){ this.pendingSlot[pid] = slot; },
+    
+    setCurrent(cid, pid){
+      const slot = this.pendingSlot[pid];
+      if (!slot) { alert('Elige un slot (Entrante/Principal/Bebida/Postre)'); return; }
+      const fd = new FormData(); fd.append('slot', slot);
+      fetch(`/admin/combos/${cid}/producto/${pid}/set`, { method:'POST', body:fd })
+      .then(() => this.load())
+      .catch(() => alert('Error al guardar'));
+    },
+    
+    remove(cid, pid){
+      fetch(`/admin/combos/${cid}/producto/${pid}/remove`, { method:'POST' })
+      .then(() => this.load())
+      .catch(() => alert('Error al quitar'));
+    }
+  };
+  
+  document.getElementById('productosModal')
+  ?.addEventListener('show.bs.modal', e => adminDM.open(e));
+</script>
+</div>
+{% endif %}
+
+{# ===================== PEDIDOS ===================== #}
+{% if seccion == 'pedidos' %}
+<div class="panel-wrap">
+  {% if pedidos and pedidos|length %}
+  <div class="table-responsive">
+    <table class="table table-dark table-hover align-middle rtable">
+      <thead class="thead-gold">
+        <tr>
+          <th>Id</th>                {# ID interno #}
+          <th>Nº pedido</th>        {# RDS-000123 #}
+          <th>Fecha</th>
+          <th>Cliente</th>
+          <th>Email</th>
+          <th class="text-end">Total (€)</th>
+          <th>Estado</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in pedidos %}
+        <tr>
+          <td data-label="#">{{ o.id }}</td>
+          <td data-label="Nº pedido">{{ o.num_pedido or ('RDS-' ~ o.id) }}</td>
+          <td data-label="Fecha">{{ o.fecha }}</td>
+          <td data-label="Cliente">{{ o.usuario_nombre or '—' }}</td>
+          <td data-label="Email">{{ o.usuario_email or '—' }}</td>
+          <td data-label="Total" class="text-end">{{ '%.2f'|format(o.total|float) }}</td>
+          <td data-label="Estado">
+            <span class="badge
                 {% if o.estado in ['pagado','preparando','enviado','completado'] %} bg-success
                 {% elif o.estado=='pendiente' %} bg-warning text-dark
                 {% elif o.estado=='cancelado' %} bg-secondary
                 {% else %} bg-light text-dark {% endif %}">
-                {{ o.estado_label or o.estado or '—' }}
-              </span>
-            </td>
-            <td data-label="Acciones" class="actions-cell text-center">
-              <div class="actions-center">
-                <!-- Ver -->
-                <button class="btn btn-sm btn-outline-warning"
-                        data-bs-toggle="modal"
-                        data-bs-target="#pedidoModal"
-                        data-oid="{{ o.id }}"
-                        data-items='{{ (o.items_json or []) | tojson }}'>
-                  Ver
-                </button>
+            {{ o.estado_label or o.estado or '—' }}
+          </span>
+        </td>
+        <td data-label="Acciones" class="actions-cell text-center">
+          <div class="actions-center">
+            <!-- Ver -->
+            <button class="btn btn-sm btn-outline-warning"
+            data-bs-toggle="modal"
+            data-bs-target="#pedidoModal"
+            data-oid="{{ o.id }}"
+            data-items='{{ (o.items_json or []) | tojson }}'>
+            Ver
+          </button>
+          
+          <!-- Estados -->
+          
+          <form method="post" action="{{ url_for('admin_pedido_estado', oid=o.id) }}">
+            <input type="hidden" name="estado" value="completado">
+            <button class="btn btn-sm btn-success">Completar</button>
+          </form>
+          <form method="post" action="{{ url_for('admin_pedido_estado', oid=o.id) }}">
+            <input type="hidden" name="estado" value="cancelado">
+            <button class="btn btn-sm btn-outline-danger">Cancelar</button>
+          </form>
+          
+          <!-- Eliminar -->
+          <form method="post" action="{{ url_for('admin_pedido_eliminar', oid=o.id) }}"
+          onsubmit="return confirm('¿Eliminar pedido #{{ o.id }}?');">
+          <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+        </form>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+<div class="text-center text-secondary py-5">No hay pedidos registrados.</div>
+{% endif %}
+</div>
 
-                <!-- Estados -->
-                
-                <form method="post" action="{{ url_for('admin_pedido_estado', oid=o.id) }}">
-                  <input type="hidden" name="estado" value="completado">
-                  <button class="btn btn-sm btn-success">Completar</button>
-                </form>
-                <form method="post" action="{{ url_for('admin_pedido_estado', oid=o.id) }}">
-                  <input type="hidden" name="estado" value="cancelado">
-                  <button class="btn btn-sm btn-outline-danger">Cancelar</button>
-                </form>
-
-                <!-- Eliminar -->
-                <form method="post" action="{{ url_for('admin_pedido_eliminar', oid=o.id) }}"
-                      onsubmit="return confirm('¿Eliminar pedido #{{ o.id }}?');">
-                  <button class="btn btn-sm btn-outline-danger">Eliminar</button>
-                </form>
-              </div>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    {% else %}
-      <div class="text-center text-secondary py-5">No hay pedidos registrados.</div>
-    {% endif %}
-  </div>
-
-  <!-- Modal Ver pedido -->
-  <div class="modal fade" id="pedidoModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content bg-dark text-light">
-        <div class="modal-header">
-          <h5 class="modal-title">Pedido <span id="pm-id"></span></h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <div id="pm-body" class="small">—</div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
+<!-- Modal Ver pedido -->
+<div class="modal fade" id="pedidoModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title">Pedido <span id="pm-id"></span></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="pm-body" class="small">—</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
+<script>
   document.getElementById('pedidoModal')?.addEventListener('show.bs.modal', e => {
     const btn = e.relatedTarget;
     const oid = btn.getAttribute('data-oid');
@@ -762,15 +770,15 @@
       const qty = it.cantidad || 1;
       const sub = Number(it.subtotal ?? it.precio ?? 0);
       html += `<li><b>${nom}</b> × ${qty}`
-            + (it.extras && it.extras.length ? `<div class="text-muted">Extras: ${it.extras.map(e=>e.nombre).join(', ')}</div>` : '')
-            + (sub ? ` <span class="text-muted">— ${sub.toFixed(2)} €</span>` : '')
-            + `</li>`;
+      + (it.extras && it.extras.length ? `<div class="text-muted">Extras: ${it.extras.map(e=>e.nombre).join(', ')}</div>` : '')
+      + (sub ? ` <span class="text-muted">— ${sub.toFixed(2)} €</span>` : '')
+      + `</li>`;
     }
     html += '</ul>';
     wrap.innerHTML = html;
   });
-  </script>
-  {% endif %}
+</script>
+{% endif %}
 
 </div>
 {% endblock %}

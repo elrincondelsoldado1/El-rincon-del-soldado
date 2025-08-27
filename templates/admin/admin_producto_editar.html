@@ -25,41 +25,46 @@
 {% block content %}
 <div class="container">
   <h1 class="text-gold fw-bold mb-4">Editar producto #{{ p.id }}</h1>
-
+  
   <form method="POST" enctype="multipart/form-data" class="auth-form" id="form-edit">
     <div class="mb-3">
       <label class="input-label">Categoría</label>
       <select name="categoria" class="form-select" required>
         {% for c in categorias %}
-          <option value="{{ c }}" {{ 'selected' if c==p.categoria else '' }}>{{ c }}</option>
+        <option value="{{ c }}" {{ 'selected' if c==p.categoria else '' }}>{{ c }}</option>
         {% endfor %}
       </select>
     </div>
-
+    
     <div class="mb-3">
       <label class="input-label">Nombre</label>
       <input type="text" name="nombre" class="form-control" value="{{ p.nombre }}" required>
     </div>
-
+    
     <div class="mb-3">
       <label class="input-label">Descripción</label>
       <textarea name="descripcion" class="form-control" rows="4">{{ p.descripcion }}</textarea>
     </div>
-
+    
     <div class="mb-3">
       <label class="input-label">Precio (€)</label>
       <input type="number" step="0.01" min="0" name="precio" class="form-control" value="{{ '%.2f'|format(p.precio) }}" required>
     </div>
-
+    
     <div class="mb-4">
       <label class="input-label d-block">Imagen</label>
       {% if p.imagen %}
-        <img src="{{ url_for('static', filename='img/' ~ p.imagen) }}" alt="img" style="height:64px;border-radius:8px;" class="mb-2">
+      {% if p.imagen.startswith('http') %}
+      <img src="{{ p.imagen }}" alt="img" style="height:64px;border-radius:8px;" class="mb-2">
+      {% else %}
+      <img src="{{ url_for('static', filename='img/' ~ p.imagen) }}" alt="img" style="height:64px;border-radius:8px;" class="mb-2">
       {% endif %}
+      {% endif %}
+      
       <input type="file" name="imagen" accept="image/*" class="form-control">
       <div class="form-text">Si no seleccionas archivo, se mantiene la imagen actual.</div>
     </div>
-
+    
     <!-- Alérgenos -->
     <div class="mb-3">
       <div class="d-flex justify-content-between align-items-center mb-2">
@@ -72,19 +77,19 @@
       <div class="d-flex flex-wrap gap-2">
         {% set sel = p.alergenos or [] %}
         {% for a in alergenos %}
-          {% set checked = a in sel %}
-          <input class="pill-check" type="checkbox" id="alg_{{ loop.index }}" name="alergenos" value="{{ a }}" {{ 'checked' if checked else '' }}>
-          <label class="pill-label" for="alg_{{ loop.index }}">
-            <span class="allergen-badge">
-              {% set k=a|lower %}
-              {% if k=='gluten' %}🌾{% elif k=='lactosa' %}🥛{% elif k=='huevo' %}🥚{% elif k=='frutos secos' %}🥜{% elif k=='marisco' %}🦐{% elif k=='pescado' %}🐟{% elif k=='soja' %}🫘{% elif k=='sesamo' %}SE{% elif k=='apio' %}🥬{% elif k=='mostaza' %}MO{% else %}!{% endif %}
-            </span>
-            <span>{{ a|title }}</span>
-          </label>
+        {% set checked = a in sel %}
+        <input class="pill-check" type="checkbox" id="alg_{{ loop.index }}" name="alergenos" value="{{ a }}" {{ 'checked' if checked else '' }}>
+        <label class="pill-label" for="alg_{{ loop.index }}">
+          <span class="allergen-badge">
+            {% set k=a|lower %}
+            {% if k=='gluten' %}🌾{% elif k=='lactosa' %}🥛{% elif k=='huevo' %}🥚{% elif k=='frutos secos' %}🥜{% elif k=='marisco' %}🦐{% elif k=='pescado' %}🐟{% elif k=='soja' %}🫘{% elif k=='sesamo' %}SE{% elif k=='apio' %}🥬{% elif k=='mostaza' %}MO{% else %}!{% endif %}
+          </span>
+          <span>{{ a|title }}</span>
+        </label>
         {% endfor %}
       </div>
     </div>
-
+    
     <!-- Estado -->
     <div class="mb-3">
       <div class="form-check form-switch">
@@ -96,7 +101,7 @@
         <label class="form-check-label" for="sw-visible">Visible en la carta</label>
       </div>
     </div>
-
+    
     <div class="d-flex gap-2">
       <button class="btn btn-military">Guardar cambios</button>
       <a href="{{ url_for('admin_index', seccion='carta') }}" class="btn btn-secondary">Cancelar</a>
@@ -107,16 +112,16 @@
 <script>
   // Reglas simples para sugerir alérgenos a partir del nombre/descripcion
   const reglas = [
-    { k: /(pan|harina|rebozad|masa|pasta|gnocchi|pizza|empanad|gallet|bizcocho|trigo|cebada|centeno)/i, alg: 'gluten' },
-    { k: /(queso|leche|nata|mantequilla|yogur|lactosa|bechamel|mozzarella|parmesan|cheddar)/i, alg: 'lactosa' },
-    { k: /(huevo|tortilla|mayonesa|alioli|huevos)/i, alg: 'huevo' },
-    { k: /(almendra|nuez|avellana|pistacho|cacahuete|anacardo|nueces|frutos\s*secos)/i, alg: 'frutos secos' },
-    { k: /(gamba|langostin|camarón|marisc)/i, alg: 'marisco' },
-    { k: /(at[úu]n|bonito|salm[oó]n|bacalao|merluza|anchoa|sardina|pescad)/i, alg: 'pescado' },
-    { k: /(soja|tamari|tofu|edamame)/i, alg: 'soja' },
-    { k: /(s[ée]sam|ajonjol[ií])/i, alg: 'sesamo' },
-    { k: /(apio)/i, alg: 'apio' },
-    { k: /(mostaza|dijon)/i, alg: 'mostaza' },
+  { k: /(pan|harina|rebozad|masa|pasta|gnocchi|pizza|empanad|gallet|bizcocho|trigo|cebada|centeno)/i, alg: 'gluten' },
+  { k: /(queso|leche|nata|mantequilla|yogur|lactosa|bechamel|mozzarella|parmesan|cheddar)/i, alg: 'lactosa' },
+  { k: /(huevo|tortilla|mayonesa|alioli|huevos)/i, alg: 'huevo' },
+  { k: /(almendra|nuez|avellana|pistacho|cacahuete|anacardo|nueces|frutos\s*secos)/i, alg: 'frutos secos' },
+  { k: /(gamba|langostin|camarón|marisc)/i, alg: 'marisco' },
+  { k: /(at[úu]n|bonito|salm[oó]n|bacalao|merluza|anchoa|sardina|pescad)/i, alg: 'pescado' },
+  { k: /(soja|tamari|tofu|edamame)/i, alg: 'soja' },
+  { k: /(s[ée]sam|ajonjol[ií])/i, alg: 'sesamo' },
+  { k: /(apio)/i, alg: 'apio' },
+  { k: /(mostaza|dijon)/i, alg: 'mostaza' },
   ];
   const $ = (s, c=document)=>c.querySelector(s);
   const $$ = (s, c=document)=>Array.from(c.querySelectorAll(s));

@@ -286,37 +286,43 @@ def _ensure_stripe_support():
 _ensure_stripe_support()
 
 
-# ───────── Helper para subir imágen cloudinary ─────────
-
+# ───────── Helper para subir imágenes (Cloudinary o local) ─────────
 from werkzeug.utils import secure_filename
 import time as _t
 
-def upload_image_or_local(file_storage, folder="avatars"):
+def upload_image_or_local(file_storage, folder="menu"):
     """
-    Si hay CLOUDINARY_URL, intenta subir a Cloudinary y devuelve (url, public_id).
-    Si falla o no hay Cloudinary, guarda en /static/img/<folder>/ y devuelve (ruta_relativa, None).
+    Devuelve (value_for_db, public_id_or_None)
+    - Si hay CLOUDINARY_URL: sube a Cloudinary (carpeta = folder) y devuelve secure_url.
+    - Si no: guarda en /static/img(/avatars opcional) y devuelve 'nombre.ext' (productos)
+            o 'img/avatars/nombre.ext' (avatars) para mantener compatibilidad.
     """
     if USE_CLOUDINARY:
-        try:
-            r = cloudinary.uploader.upload(
-                file_storage,
-                folder=folder,
-                resource_type="image",
-                overwrite=False
-            )
-            return r.get("secure_url"), r.get("public_id")
-        except Exception as e:
-            app.logger.exception(f"Cloudinary upload failed: {e}")  # <- queda en logs de Render
+        r = cloudinary.uploader.upload(
+            file_storage,
+            folder=folder,
+            resource_type="image",
+            overwrite=False
+        )
+        return r.get("secure_url"), r.get("public_id")
 
-    # Fallback local
+    # ------- Fallback local -------
     ext = (file_storage.filename.rsplit(".", 1)[-1] or "").lower()
-    safe_base = secure_filename(file_storage.filename.rsplit(".", 1)[0])[:36] or "avatar"
+    safe_base = secure_filename(file_storage.filename.rsplit(".", 1)[0])[:36] or "img"
     fname = f"{int(_t.time())}_{safe_base}.{ext}"
 
-    os.makedirs(AVATARS_DIR, exist_ok=True)
-    file_storage.save(os.path.join(AVATARS_DIR, fname))
-    return f"img/avatars/{fname}", None
+    if folder == "avatars":
+        dest_dir = os.path.join(UPLOAD_FOLDER, "avatars")  # static/img/avatars
+        os.makedirs(dest_dir, exist_ok=True)
+        file_storage.save(os.path.join(dest_dir, fname))
+        # Para avatars mantenemos la ruta relativa clásica:
+        return f"img/avatars/{fname}", None
 
+    # Productos (u otros): deja el archivo en static/img y guarda SOLO el nombre en DB
+    dest_dir = UPLOAD_FOLDER  # static/img
+    os.makedirs(dest_dir, exist_ok=True)
+    file_storage.save(os.path.join(dest_dir, fname))
+    return fname, None
 
 
 
