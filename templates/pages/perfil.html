@@ -151,21 +151,28 @@
 
 {% block content %}
 <div class="container py-3">
-  
+
   <h1 class="text-gold fw-bold mb-3">Mi perfil</h1>
-  
+
   <!-- Pestañas -->
-  <ul class="nav tabs-gold mb-3">
-    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-datos">Datos de cuenta</a></li>
-    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-favoritos">Favoritos</a></li>
-    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-pedidos">Pedidos</a></li>
+  <ul class="nav tabs-gold mb-3" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="tab-datos-tab" data-bs-toggle="tab" href="#tab-datos" data-bs-target="#tab-datos" role="tab" aria-controls="tab-datos" aria-selected="true">Datos de cuenta</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="tab-favoritos-tab" data-bs-toggle="tab" href="#tab-favoritos" data-bs-target="#tab-favoritos" role="tab" aria-controls="tab-favoritos" aria-selected="false">Favoritos</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="tab-pedidos-tab" data-bs-toggle="tab" href="#tab-pedidos" data-bs-target="#tab-pedidos" role="tab" aria-controls="tab-pedidos" aria-selected="false">Pedidos</a>
+    </li>
   </ul>
-  
+
   <div class="tab-content">
-    
+
     <!-- ================= DATOS ================= -->
-    <div class="tab-pane fade show active" id="tab-datos">
+    <div class="tab-pane fade show active" id="tab-datos" role="tabpanel" aria-labelledby="tab-datos-tab">
       <div class="row g-3">
+
         <!-- Datos básicos -->
         <div class="col-lg-7">
           <div class="panel-gold form-gold h-100">
@@ -180,17 +187,14 @@
                   <label class="form-label">Teléfono</label>
                   <input class="form-control" name="telefono" value="{{ (perfil.telefono or '') }}">
                 </div>
-                
                 <div class="col-12">
                   <label class="form-label">Dirección</label>
                   <input class="form-control" name="direccion" value="{{ (perfil.direccion or '') }}">
                 </div>
-                
                 <div class="col-md-6">
                   <label class="form-label">Ciudad</label>
                   <input class="form-control" name="ciudad" value="{{ (perfil.ciudad or '') }}">
                 </div>
-                
                 <div class="col-md-6">
                   <label class="form-label">Método de pago preferido</label>
                   {% set m = (perfil.metodo_pago_pref or '') %}
@@ -201,9 +205,8 @@
                     <option value="efectivo" {{ 'selected' if m=='efectivo' else '' }}>Efectivo</option>
                   </select>
                 </div>
-                
                 <div class="col-md-6">
-                  <label class="form-label">Alias de pago (ej. “Visa personal”)</label>
+                  <label class="form-label">Alias de pago</label>
                   <input class="form-control" name="pago_alias" value="{{ (perfil.pago_alias or '') }}">
                 </div>
                 <div class="col-md-6">
@@ -211,14 +214,13 @@
                   <input class="form-control" name="pago_last4" maxlength="4" value="{{ (perfil.pago_last4 or '') }}">
                 </div>
               </div>
-              
               <div class="mt-3 d-flex gap-2">
                 <button class="btn btn-gold">Guardar cambios</button>
               </div>
             </form>
           </div>
         </div>
-        
+
         <!-- Cambiar contraseña -->
         <div class="col-lg-5">
           <div class="panel-gold form-gold h-100">
@@ -234,165 +236,134 @@
               </div>
               <button class="btn btn-gold">Actualizar contraseña</button>
             </form>
-            
-            <div class="mt-3 user-email">
-              <small>Email:</small> {{ user.email }}
-            </div>
+            <div class="mt-3 user-email"><small>Email:</small> {{ user.email }}</div>
           </div>
         </div>
-        
+
         <!-- Avatar -->
         <div class="col-12">
           <div class="panel-gold form-gold">
             <h5 class="text-gold fw-bold mb-3">Mi avatar</h5>
-            
             <div class="row g-3 align-items-center">
               <div class="col-sm-3 col-md-2 text-center">
-                {# usa lo que haya en sesión y si no, lo de DB; si nada, default #}
                 {% set av = session.get('avatar') or user.avatar or 'img/avatars/default.webp' %}
                 <img
-                src="{% if av.startswith('http') %}{{ av }}{% else %}{{ url_for('static', filename=av if av.startswith('img/') else 'img/avatars/' ~ av) }}{% endif %}"
-                alt="Avatar"
-                class="img-fluid rounded"
-                style="max-width:110px;border:1px solid rgba(212,175,55,.35);box-shadow:0 0 16px rgba(240,194,75,.12);">
+                  src="{% if av.startswith('http') %}{{ av }}{% else %}{{ url_for('static', filename=av if av.startswith('img/') else 'img/avatars/' ~ av) }}{% endif %}"
+                  alt="Avatar"
+                  class="img-fluid rounded"
+                  style="max-width:110px;border:1px solid rgba(212,175,55,.35);box-shadow:0 0 16px rgba(240,194,75,.12)">
               </div>
-              
               <div class="col-sm-9 col-md-10">
                 <form method="post" enctype="multipart/form-data" action="{{ url_for('perfil_avatar') }}">
                   <div class="row g-2 align-items-center">
                     <div class="col-md-8">
-                      <input class="form-control" type="file" name="avatar"
-                      accept=".png,.jpg,.jpeg,.webp,.gif" required>
+                      <input class="form-control" type="file" name="avatar" accept=".png,.jpg,.jpeg,.webp,.gif" required>
                     </div>
                     <div class="col-md-4 d-grid">
                       <button class="btn btn-gold">Actualizar avatar</button>
                     </div>
                   </div>
-                  <div class="form-text mt-1" style="color:#c9c9c9;">
-                    Formatos permitidos: png, jpg, jpeg, webp, gif.
-                  </div>
+                  <div class="form-text mt-1" style="color:#c9c9c9">Formatos permitidos: png, jpg, jpeg, webp, gif.</div>
                 </form>
               </div>
             </div>
           </div>
         </div>
-        
-        
-        <!-- ================= FAVORITOS ================= -->
-        
-        <div class="tab-pane fade" id="tab-favoritos">
-          {% if favoritos and favoritos|length %}
-          <div class="panel-gold fav-outer">
-            <div class="table-responsive">
-              <table class="table table-dark table-hover align-middle rtable fav-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Imagen</th>
-                    <th>Categoría</th>
-                    <th>Producto</th>
-                    <th class="text-end">Precio (€)</th>
-                    <th class="text-center">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for p in favoritos %}
-                  <tr>
-                    <td data-label="#">{{ p.id }}</td>
-                    <td data-label="Imagen">
-                      {% set img = p.imagen or '' %}
-                      {% if img %}
+
+      </div><!-- /row -->
+    </div><!-- /tab-datos -->
+
+    <!-- ================= FAVORITOS ================= -->
+    <div class="tab-pane fade" id="tab-favoritos" role="tabpanel" aria-labelledby="tab-favoritos-tab">
+      {% if favoritos and favoritos|length %}
+      <div class="panel-gold">
+        <div class="table-responsive">
+          <table class="table table-dark table-hover align-middle rtable fav-table">
+            <thead>
+              <tr>
+                <th>#</th><th>Imagen</th><th>Categoría</th><th>Producto</th>
+                <th class="text-end">Precio (€)</th><th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for p in favoritos %}
+              <tr>
+                <td data-label="#">{{ p.id }}</td>
+                <td data-label="Imagen">
+                  {% set img = p.imagen or '' %}
+                  {% if img %}
+                    {% if img.startswith('http') %}
+                      <img class="fav-img" src="{{ img }}" alt="{{ p.nombre }}">
+                    {% else %}
                       <img class="fav-img" src="{{ url_for('static', filename='img/' ~ img) }}" alt="{{ p.nombre }}">
-                      {% else %}
-                      <div class="fav-img d-flex align-items-center justify-content-center">—</div>
-                      {% endif %}
-                    </td>
-                    <td data-label="Categoría">{{ p.categoria }}</td>
-                    <td data-label="Producto" class="fw-semibold">{{ p.nombre }}</td>
-                    <td data-label="Precio" class="text-end">{{ '%.2f'|format(p.precio|float) }}</td>
-                    <td data-label="Acciones" class="text-center">
-                      <div class="d-flex justify-content-center">
-                        <form method="post" action="{{ url_for('favoritos_toggle', pid=p.id) }}" class="m-0">
-                          <button class="btn btn-sm btn-outline-danger">Quitar</button>
-                        </form>
-                      </div>
-                    </td>
-                    
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          {% else %}
-          <div class="text-secondary py-4">Aún no tienes favoritos.</div>
-          {% endif %}
-        </div>
-        
-        
-        {# ====== PEDIDOS ====== #}
-        <div class="tab-pane fade" id="tab-pedidos">
-          {% if pedidos and pedidos|length %}
-          <div class="table-responsive mt-2">
-            <table class="table table-dark table-hover align-middle rtable ord-table">
-              <thead class="thead-gold">
-                <tr>
-                  <th>Pedido</th>
-                  <th>Fecha</th>
-                  <th>Estado</th>
-                  <th class="text-end">Total (€)</th>
-                  <th class="text-center">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for o in pedidos %}
-                <tr>
-                  <td data-label="Pedido">{{ o.num_pedido or ('#' ~ o.id) }}</td>
-                  <td data-label="Fecha">{{ o.creado_en or o.fecha }}</td>
-                  <td data-label="Estado">
-                    {% set est = (o.estado or '')|lower %}
-                    {% set badge = 'bg-light text-dark' %}
-                    {% if 'pagado' in (o.estado_label or '').lower() %}{% set badge = 'bg-success' %}
-                    {% elif est == 'pendiente' %}{% set badge = 'bg-warning text-dark' %}
-                    {% elif est == 'cancelado' %}{% set badge = 'bg-secondary' %}
-                    {% elif est == 'completado' %}{% set badge = 'bg-success' %}
                     {% endif %}
-                    <span class="badge {{ badge }}">{{ o.estado_label or o.estado }}</span>
-                  </td>
-                  
-                  <td data-label="Total" class="text-end">{{ '%.2f'|format(o.total|float) }}</td>
-                  <td data-label="Acciones" class="text-center">
-                    <div class="d-flex justify-content-center w-100">
-                      <form method="post"
-                      action="{{ url_for('mis_pedidos_eliminar', oid=o.id) }}"
-                      class="m-0"
-                      onsubmit="return confirm('¿Eliminar el pedido {{ o.num_pedido or ('#' ~ o.id) }}?');">
-                      <button class="btn btn-sm btn-outline-danger">Eliminar</button>
-                    </form>
-                  </div>
+                  {% else %}
+                    <div class="fav-img d-flex align-items-center justify-content-center">—</div>
+                  {% endif %}
                 </td>
-                
+                <td data-label="Categoría">{{ p.categoria }}</td>
+                <td data-label="Producto" class="fw-semibold">{{ p.nombre }}</td>
+                <td data-label="Precio" class="text-end">{{ '%.2f'|format(p.precio|float) }}</td>
+                <td data-label="Acciones" class="text-center">
+                  <form method="post" action="{{ url_for('favoritos_toggle', pid=p.id) }}" class="m-0">
+                    <button class="btn btn-sm btn-outline-danger">Quitar</button>
+                  </form>
+                </td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
         </div>
-        {% else %}
-        <div class="text-secondary py-4">No hay pedidos todavía.</div>
-        {% endif %}
       </div>
-      
-      
-    </div> <!-- /tab-content -->
-  </div>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (location.hash) {
-        const t = document.querySelector(`a[href="${location.hash}"][data-bs-toggle="tab"]`);
-        if (t) new bootstrap.Tab(t).show();
-      }
-    });
-  </script>
-  {% endblock %}
-  
+      {% else %}
+        <div class="text-secondary py-4">Aún no tienes favoritos.</div>
+      {% endif %}
+    </div>
+
+    <!-- ================= PEDIDOS ================= -->
+    <div class="tab-pane fade" id="tab-pedidos" role="tabpanel" aria-labelledby="tab-pedidos-tab">
+      {% if pedidos and pedidos|length %}
+      <div class="table-responsive mt-2">
+        <table class="table table-dark table-hover align-middle rtable ord-table">
+          <thead>
+            <tr>
+              <th>Pedido</th><th>Fecha</th><th>Estado</th>
+              <th class="text-end">Total (€)</th><th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for o in pedidos %}
+            <tr>
+              <td data-label="Pedido">{{ o.num_pedido or ('#' ~ o.id) }}</td>
+              <td data-label="Fecha">{{ o.creado_en or o.fecha }}</td>
+              <td data-label="Estado"><span class="badge bg-secondary">{{ o.estado_label or o.estado or '—' }}</span></td>
+              <td data-label="Total" class="text-end">{{ '%.2f'|format(o.total|float) }}</td>
+              <td data-label="Acciones" class="text-center">
+                <form method="post" action="{{ url_for('mis_pedidos_eliminar', oid=o.id) }}" class="m-0"
+                      onsubmit="return confirm('¿Eliminar el pedido {{ o.num_pedido or ('#' ~ o.id) }}?');">
+                  <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        <div class="text-secondary py-4">No hay pedidos todavía.</div>
+      {% endif %}
+    </div>
+
+  </div><!-- /tab-content -->
+</div>
+
+<script>
+  // si llega con hash (#tab-favoritos, etc.) abre esa pestaña
+  document.addEventListener('DOMContentLoaded', () => {
+    if (location.hash) {
+      const trigger = document.querySelector(`a[href="${location.hash}"][data-bs-toggle="tab"]`);
+      if (trigger && window.bootstrap) new bootstrap.Tab(trigger).show();
+    }
+  });
+</script>
+{% endblock %}
