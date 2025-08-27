@@ -192,6 +192,17 @@ _ensure_pedido_extras()
 
 
 
+def _ensure_cloudinary_columns():
+    try:
+        q("ALTER TABLE menu ADD COLUMN IF NOT EXISTS imagen_pid TEXT;", commit=True)
+    except Exception: pass
+    try:
+        q("ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS avatar_pid TEXT;", commit=True)
+    except Exception: pass
+
+_ensure_cloudinary_columns()
+
+
 # ===== Email =====
 def send_email(to, subject, text_body, html_body=None):
     if not all([app.config.get('MAIL_FROM'), app.config.get('SMTP_HOST'),
@@ -326,6 +337,17 @@ def upload_image_or_local(file_storage, folder="menu"):
 
 
 
+def cloud_destroy(public_id: str):
+    """Borra un recurso de Cloudinary si hay config y public_id."""
+    try:
+        if USE_CLOUDINARY and public_id:
+            cloudinary.uploader.destroy(public_id, resource_type="image", invalidate=True)
+    except Exception as e:
+        app.logger.warning(f"No se pudo borrar Cloudinary {public_id}: {e}")
+
+
+
+
 
 # ───────── Páginas básicas ─────────
 @app.route('/')
@@ -368,26 +390,16 @@ def contacto():
             flash('Faltan campos obligatorios (nombre, contacto y mensaje).', 'warning')
             return redirect(url_for('contacto'))
 
-        # adjunto opcional (imagen)
+        # adjunto opcional (imagen) → Cloudinary
         imagen_rel = None
         f = request.files.get('adjunto')
         if f and f.filename:
             if not allowed_file(f.filename):
                 flash('Formato de imagen no permitido.', 'warning')
                 return redirect(url_for('contacto'))
-            fname = secure_filename(f.filename)
-    
-            # Evitar colisiones
-            base, ext = os.path.splitext(fname)
-            i = 1
-            dest = os.path.join(CONTACT_UPLOADS, fname)
-            while os.path.exists(dest):
-                fname = f"{base}_{i}{ext}"
-                dest = os.path.join(CONTACT_UPLOADS, fname)
-                i += 1
-            f.save(dest)
-            imagen_rel = f"uploads/contacto/{fname}"  # para url_for('static', filename=imagen_rel)
+            imagen_rel, _pid = upload_image_or_local(f, folder="contacto")  # ← URL de Cloudinary o path local
 
+        
 
         q("""INSERT INTO contacto(nombre,email,telefono,asunto,mensaje,imagen,admin_estado)
              VALUES (%s,%s,%s,%s,%s,%s,'pendiente')""",
@@ -1502,23 +1514,23 @@ from werkzeug.utils import secure_filename
 def admin_producto_nuevo():
     if not admin_required(): return redirect(url_for('index'))
     if request.method=='POST':
-        cat        = request.form.get('categoria')
-        nombre     = request.form.get('nombre')
-        desc       = request.form.get('descripcion')
-        precio     = request.form.get('precio')
-        alergenos  = request.form.getlist('alergenos')
+        cat  = request.form.get('categoria')
+        nombre = request.form.get('nombre')
+        desc = request.form.get('descripcion')
+        precio = request.form.get('precio')
+        alergenos = request.form.getlist('alergenos')
 
         f = request.files.get('imagen')
-        if not f or not f.filename or not allowed_file(f.filename):
+        if not f or not allowed_file(f.filename):
             flash('Imagen obligatoria y de formato permitido','warning')
             return redirect(request.url)
 
-        # ⬇️ SUBIR A CLOUDINARY (o local si no hay credenciales)
-        imagen_url, _pid = upload_image_or_local(f, folder="productos")
+        # >>> Cloudinary o local:
+        img_value, img_pid = upload_image_or_local(f, folder="menu")
 
-        q("""INSERT INTO menu(categoria,nombre,descripcion,precio,imagen,alergenos,agotado,visible)
-             VALUES(%s,%s,%s,%s,%s,%s,%s,%s)""",
-          cat, nombre, desc, precio, imagen_url, alergenos, False, True, commit=True)
+        q("""INSERT INTO menu(categoria,nombre,descripcion,precio,imagen,imagen_pid,alergenos,agotado,visible)
+             VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+          cat,nombre,desc,precio,img_value,img_pid,alergenos,False,True,commit=True)
 
         flash('Producto añadido','success')
         return redirect(url_for('admin_index', seccion='carta'))
@@ -1527,12 +1539,24 @@ def admin_producto_nuevo():
                            categorias=CATEGORIAS, alergenos=ALERGENOS)
 
 
+
 @app.route('/admin/menu/eliminar/<int:pid>', methods=['POST'])
 def admin_menu_eliminar(pid):
     if not admin_required(): return redirect(url_for('index'))
+
+    # Obtén public_id antes de borrar
+    row = q("SELECT imagen_pid FROM menu WHERE id=%s", pid, one=True) or {}
+    pid_to_delete = row.get('imagen_pid') if isinstance(row, dict) else None
+
     q("DELETE FROM menu WHERE id=%s", pid, commit=True)
+    if pid_to_delete:
+        cloud_destroy(pid_to_delete)
+
     flash('Producto eliminado','info')
     return redirect(url_for('admin_index', seccion='carta'))
+
+
+
 
 @app.route('/admin/producto/<int:pid>/editar', methods=['GET','POST'])
 def admin_producto_editar(pid):
@@ -1543,32 +1567,42 @@ def admin_producto_editar(pid):
         return redirect(url_for('admin_index', seccion='carta'))
 
     if request.method=='POST':
-        cat        = request.form.get('categoria')
-        nombre     = request.form.get('nombre')
-        desc       = request.form.get('descripcion')
-        precio     = request.form.get('precio')
-        alergenos  = request.form.getlist('alergenos')
-        agotado    = bool(request.form.get('agotado'))
-        visible    = bool(request.form.get('visible'))
+        cat  = request.form.get('categoria')
+        nombre = request.form.get('nombre')
+        desc = request.form.get('descripcion')
+        precio = request.form.get('precio')
+        alergenos = request.form.getlist('alergenos')
+        agotado = bool(request.form.get('agotado'))
+        visible = bool(request.form.get('visible'))
 
-        imagen_final = p['imagen']  # mantiene la actual por defecto
+        # Imagen actual y public_id actual
+        current_img  = p.get('imagen')
+        current_pid  = p.get('imagen_pid')
 
         f = request.files.get('imagen')
         if f and f.filename:
             if not allowed_file(f.filename):
                 flash('Formato de imagen no permitido','warning')
                 return redirect(request.url)
+            # Subir nueva
+            new_img, new_pid = upload_image_or_local(f, folder="menu")
+            # Actualizar con nueva
+            q("""UPDATE menu
+                 SET categoria=%s, nombre=%s, descripcion=%s, precio=%s,
+                     imagen=%s, imagen_pid=%s, alergenos=%s, agotado=%s, visible=%s
+                 WHERE id=%s""",
+              cat,nombre,desc,precio,new_img,new_pid,alergenos,agotado,visible,pid,commit=True)
 
-            # ⬇️ SUBIR A CLOUDINARY (o local si no hay credenciales)
-            nueva_url, _pid = upload_image_or_local(f, folder="productos")
-            if nueva_url:
-                imagen_final = nueva_url
-
-        q("""UPDATE menu
-             SET categoria=%s, nombre=%s, descripcion=%s, precio=%s,
-                 imagen=%s, alergenos=%s, agotado=%s, visible=%s
-             WHERE id=%s""",
-          cat, nombre, desc, precio, imagen_final, alergenos, agotado, visible, pid, commit=True)
+            # Borrar anterior si era de Cloudinary y cambia el pid
+            if new_pid and current_pid and new_pid != current_pid:
+                cloud_destroy(current_pid)
+        else:
+            # Sin cambiar imagen
+            q("""UPDATE menu
+                 SET categoria=%s, nombre=%s, descripcion=%s, precio=%s,
+                     alergenos=%s, agotado=%s, visible=%s
+                 WHERE id=%s""",
+              cat,nombre,desc,precio,alergenos,agotado,visible,pid,commit=True)
 
         flash('Producto actualizado','success')
         return redirect(url_for('admin_index', seccion='carta'))
@@ -1985,12 +2019,23 @@ def perfil_avatar():
             flash("Formato no permitido (usa png, jpg, jpeg, webp o gif).", "warning")
             return redirect(url_for("perfil"))
 
-        # Subida (Cloudinary si hay, si no local)
-        url_o_path, _pid = upload_image_or_local(f, folder="avatars")
+        # Cargar el avatar actual para limpiar si hace falta
+        old = q("SELECT avatar_pid FROM usuarios WHERE id=%s", uid, one=True) or {}
+        old_pid = (old.get('avatar_pid') or '').strip() if isinstance(old, dict) else None
 
-        # Guardar en DB y en sesión (puede ser URL http o ruta relativa 'img/...')
-        q("UPDATE usuarios SET avatar=%s WHERE id=%s", url_o_path, uid, commit=True)
+        # Subir nuevo (Cloudinary si hay)
+        url_o_path, new_pid = upload_image_or_local(f, folder="avatars")
+
+        # Guardar en DB (URL y public_id)
+        q("UPDATE usuarios SET avatar=%s, avatar_pid=%s WHERE id=%s",
+          url_o_path, new_pid, uid, commit=True)
+
+        # Actualizar sesión (puede ser URL http o ruta relativa 'img/...')
         session["avatar"] = url_o_path
+
+        # Borrar el anterior si existía y es distinto
+        if new_pid and old_pid and new_pid != old_pid:
+            cloud_destroy(old_pid)
 
         flash("Avatar actualizado.", "success")
     except Exception as e:
@@ -1998,6 +2043,7 @@ def perfil_avatar():
         flash("No se pudo actualizar el avatar (revisa los logs).", "danger")
 
     return redirect(url_for("perfil"))
+
 
 
 # ──────────── FAVORITOS (NUEVO) ────────────
