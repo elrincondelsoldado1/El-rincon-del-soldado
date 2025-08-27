@@ -310,12 +310,16 @@
     <div class="col-6 col-md-4 col-lg-3 col-xxl-2">
       <div class="menu-card">
         {% if p.imagen %}
-        {% if p.imagen.startswith('http') %}
-        <img src="{{ p.imagen }}" alt="{{ p.nombre }}">
-        {% else %}
-        <img src="{{ url_for('static', filename='img/' ~ p.imagen) }}" alt="{{ p.nombre }}">
+          {% set img = p.imagen %}
+          {% if img.startswith('http') %}
+            <img src="{{ img }}" alt="{{ p.nombre }}">
+          {% elif img.startswith('img/') or img.startswith('/') %}
+            <img src="{{ url_for('static', filename=img if img.startswith('img/') else img.lstrip('/')) }}" alt="{{ p.nombre }}">
+          {% else %}
+            <img src="{{ url_for('static', filename='img/' ~ img) }}" alt="{{ p.nombre }}">
+          {% endif %}
         {% endif %}
-        {% endif %}
+        
         
         <div class="body">
           <div class="d-flex justify-content-between align-items-start mb-1">

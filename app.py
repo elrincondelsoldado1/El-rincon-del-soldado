@@ -376,6 +376,7 @@ def contacto():
                 flash('Formato de imagen no permitido.', 'warning')
                 return redirect(url_for('contacto'))
             fname = secure_filename(f.filename)
+    
             # Evitar colisiones
             base, ext = os.path.splitext(fname)
             i = 1
@@ -386,6 +387,7 @@ def contacto():
                 i += 1
             f.save(dest)
             imagen_rel = f"uploads/contacto/{fname}"  # para url_for('static', filename=imagen_rel)
+
 
         q("""INSERT INTO contacto(nombre,email,telefono,asunto,mensaje,imagen,admin_estado)
              VALUES (%s,%s,%s,%s,%s,%s,'pendiente')""",
@@ -1500,28 +1502,30 @@ from werkzeug.utils import secure_filename
 def admin_producto_nuevo():
     if not admin_required(): return redirect(url_for('index'))
     if request.method=='POST':
-        cat  = request.form.get('categoria')
-        nombre = request.form.get('nombre')
-        desc = request.form.get('descripcion')
-        precio = request.form.get('precio')
-        alergenos = request.form.getlist('alergenos')
+        cat        = request.form.get('categoria')
+        nombre     = request.form.get('nombre')
+        desc       = request.form.get('descripcion')
+        precio     = request.form.get('precio')
+        alergenos  = request.form.getlist('alergenos')
 
         f = request.files.get('imagen')
-        if not f or not allowed_file(f.filename):
+        if not f or not f.filename or not allowed_file(f.filename):
             flash('Imagen obligatoria y de formato permitido','warning')
             return redirect(request.url)
-        fname = secure_filename(f.filename)
-        f.save(os.path.join(UPLOAD_FOLDER, fname))
+
+        # ⬇️ SUBIR A CLOUDINARY (o local si no hay credenciales)
+        imagen_url, _pid = upload_image_or_local(f, folder="productos")
 
         q("""INSERT INTO menu(categoria,nombre,descripcion,precio,imagen,alergenos,agotado,visible)
              VALUES(%s,%s,%s,%s,%s,%s,%s,%s)""",
-          cat,nombre,desc,precio,fname,alergenos,False,True,commit=True)
+          cat, nombre, desc, precio, imagen_url, alergenos, False, True, commit=True)
 
         flash('Producto añadido','success')
         return redirect(url_for('admin_index', seccion='carta'))
 
     return render_template('admin/admin_producto_nuevo.html',
                            categorias=CATEGORIAS, alergenos=ALERGENOS)
+
 
 @app.route('/admin/menu/eliminar/<int:pid>', methods=['POST'])
 def admin_menu_eliminar(pid):
@@ -1539,34 +1543,39 @@ def admin_producto_editar(pid):
         return redirect(url_for('admin_index', seccion='carta'))
 
     if request.method=='POST':
-        cat  = request.form.get('categoria')
-        nombre = request.form.get('nombre')
-        desc = request.form.get('descripcion')
-        precio = request.form.get('precio')
-        alergenos = request.form.getlist('alergenos')
-        agotado = bool(request.form.get('agotado'))
-        visible = bool(request.form.get('visible'))
+        cat        = request.form.get('categoria')
+        nombre     = request.form.get('nombre')
+        desc       = request.form.get('descripcion')
+        precio     = request.form.get('precio')
+        alergenos  = request.form.getlist('alergenos')
+        agotado    = bool(request.form.get('agotado'))
+        visible    = bool(request.form.get('visible'))
 
-        fname = p['imagen']
+        imagen_final = p['imagen']  # mantiene la actual por defecto
+
         f = request.files.get('imagen')
         if f and f.filename:
             if not allowed_file(f.filename):
                 flash('Formato de imagen no permitido','warning')
                 return redirect(request.url)
-            fname = secure_filename(f.filename)
-            f.save(os.path.join(UPLOAD_FOLDER, fname))
+
+            # ⬇️ SUBIR A CLOUDINARY (o local si no hay credenciales)
+            nueva_url, _pid = upload_image_or_local(f, folder="productos")
+            if nueva_url:
+                imagen_final = nueva_url
 
         q("""UPDATE menu
              SET categoria=%s, nombre=%s, descripcion=%s, precio=%s,
                  imagen=%s, alergenos=%s, agotado=%s, visible=%s
              WHERE id=%s""",
-          cat,nombre,desc,precio,fname,alergenos,agotado,visible,pid,commit=True)
+          cat, nombre, desc, precio, imagen_final, alergenos, agotado, visible, pid, commit=True)
 
         flash('Producto actualizado','success')
         return redirect(url_for('admin_index', seccion='carta'))
 
     return render_template('admin/admin_producto_editar.html',
                            p=p, categorias=CATEGORIAS, alergenos=ALERGENOS)
+
 
 @app.route('/admin/producto/<int:pid>/toggle-agotado', methods=['POST'])
 def admin_producto_toggle_agotado(pid):

@@ -193,17 +193,33 @@
     color:#d4af37 !important;
     border-color: rgba(212,175,55,.25) !important;
   }
+
+  /* ——— Header del panel: en móvil apilar y dejar aire ——— */
+.admin-header{ gap:12px; }
+
+@media (max-width: 576px){
+  .admin-header{
+    flex-direction: column;       /* apila Título arriba y Botón abajo */
+    align-items: stretch;         /* el botón ocupa todo el ancho */
+  }
+  .admin-header .btn{
+    width: 100%;
+    margin-top: .25rem;           /* separa del título */
+  }
+}
+
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid px-3 py-3">
-  <div class="d-flex align-items-center justify-content-between mb-3">
-    <h1 class="text-gold fw-bold m-0">Panel de Administración</h1>
-    {% if seccion == 'carta' %}
-    <a href="{{ url_for('admin_producto_nuevo') }}" class="btn btn-military btn-lg">Añadir producto</a>
-    {% endif %}
-  </div>
+
+<div class="admin-header d-flex align-items-center justify-content-between mb-3">
+  <h1 class="text-gold fw-bold m-0">Panel de Administración</h1>
+  {% if seccion == 'carta' %}
+  <a href="{{ url_for('admin_producto_nuevo') }}" class="btn btn-military btn-lg">Añadir producto</a>
+  {% endif %}
+</div>
+
   
   {# ===== Pestañas con recuadro dorado ===== #}
   <div class="tabs-gold mb-3">
